@@ -60,13 +60,41 @@ const draw_starship = ({ x, y }, clr) => {
     ctx.fillStyle = clr
     ctx.beginPath()
     ctx.moveTo(x_offset, y_offset + 3 * area + unit)
+    // left tail of wing
     ctx.lineTo(x_offset, y_offset + squ)
-    ctx.lineTo(x_offset + 1 * area + unit, y_offset + 3 * area + 3 * unit)
+    ctx.lineTo(x_offset + 2 * unit, y_offset + squ)
+    ctx.lineTo(x_offset + squ - area, y_offset + squ - area)
+    // shifted right
+    ctx.lineTo(x_offset + area + unit, y_offset + 4 * area - unit)
     ctx.lineTo(x_offset + 2 * area + 2 * unit, y_offset + squ)
-    ctx.lineTo(x_offset + 3 * area + 3 * unit, y_offset + 3 * area + 3 * unit)
+    ctx.lineTo(x_offset + 4 * area - unit, y_offset + 4 * area - unit)
+    // right tail of wing
     ctx.lineTo(x_offset + squ, y_offset + squ)
+    ctx.lineTo(x_offset + 3 * area + 2 * unit, y_offset + squ - area)
+    ctx.lineTo(x_offset + 4 * area + 2 * unit, y_offset + squ)
+    // shifted left
     ctx.lineTo(x_offset + squ, y_offset + 3 * area + unit)
-
+    ctx.lineTo(x_offset + squ - unit, y_offset + 3 * area + unit)
+    ctx.lineTo(x_offset + squ - unit, y_offset + 4 * area - unit)
+    ctx.lineTo(x_offset + 4 * area, y_offset + 3 * area)
+    ctx.lineTo(x_offset + 4 * area, y_offset + 2 * area)
+    ctx.lineTo(x_offset + 4 * area - unit, y_offset + 2 * area)
+    ctx.lineTo(x_offset + 4 * area - unit, y_offset + 3 * area - unit)
+    ctx.lineTo(x_offset + 3 * area, y_offset + 2 * area)
+    ctx.lineTo(x_offset + 3 * area, y_offset + area)
+    ctx.lineTo(x_offset + 3 * area - unit, y_offset + area)
+    ctx.lineTo(x_offset + 3 * area - unit, y_offset)
+    ctx.lineTo(x_offset + 2 * area + unit, y_offset)
+    ctx.lineTo(x_offset + 2 * area + unit, y_offset + area)
+    ctx.lineTo(x_offset + 2 * area, y_offset + area)
+    ctx.lineTo(x_offset + 2 * area, y_offset + 2 * area)
+    ctx.lineTo(x_offset + area + unit, y_offset + 3 * area - unit)
+    ctx.lineTo(x_offset + area + unit, y_offset + 2 * area + unit)
+    ctx.lineTo(x_offset + area, y_offset + 2 * area + unit)
+    ctx.lineTo(x_offset + area, y_offset + 3 * area)
+    ctx.lineTo(x_offset + unit, y_offset + 4 * area - unit)
+    ctx.lineTo(x_offset + unit, y_offset + 3 * area + unit)
+    ctx.closePath()
     ctx.fill()
 
     ctx.fillStyle = '#f00'
