@@ -47,6 +47,13 @@ const draw_board = () => {
     ui.ctx.strokeRect(edge, edge, squ * 8, squ * 8)
 }
 
+const draw_pawn = ({ x, y }, clr) => {}
+const draw_bishop = ({ x, y }, clr) => {}
+const draw_knight = ({ x, y }, clr) => {}
+const draw_rook = ({ x, y }, clr) => {}
+const draw_queen = ({ x, y }, clr) => {}
+const draw_king = ({ x, y }, clr) => {}
+
 size_canvas()
 draw_board()
 
