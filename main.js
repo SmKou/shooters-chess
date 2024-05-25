@@ -1,7 +1,7 @@
 import './style.css'
 
 const green = '#385546'
-const beige = '#e9d7bc'
+const off_green = '#cdaa7d'
 const lbl_color = '#455c52'
 const a_code = 65
 const max_squ = 8     
@@ -36,7 +36,7 @@ const draw_board = () => {
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_clr_squ = !is_clr_squ
-        ui.ctx.fillStyle = is_clr_squ ? green : beige
+        ui.ctx.fillStyle = is_clr_squ ? green : off_green
 
         const x = edge + (i % max_squ) * ui.squ
         const y = edge + Math.floor(i / max_squ) * ui.squ
@@ -62,16 +62,13 @@ const draw_starship = ({ x, y }, clr) => {
     ctx.moveTo(x_offset, y_offset + 3 * area + unit)
     // left tail of wing
     ctx.lineTo(x_offset, y_offset + squ)
-    ctx.lineTo(x_offset + 2 * unit, y_offset + squ)
-    ctx.lineTo(x_offset + squ - area, y_offset + squ - area)
+    ctx.lineTo(x_offset + unit, y_offset + squ)
     // shifted right
     ctx.lineTo(x_offset + area + unit, y_offset + 4 * area - unit)
     ctx.lineTo(x_offset + 2 * area + 2 * unit, y_offset + squ)
     ctx.lineTo(x_offset + 4 * area - unit, y_offset + 4 * area - unit)
-    // right tail of wing
-    ctx.lineTo(x_offset + squ, y_offset + squ)
-    ctx.lineTo(x_offset + 3 * area + 2 * unit, y_offset + squ - area)
-    ctx.lineTo(x_offset + 4 * area + 2 * unit, y_offset + squ)
+    ctx.lineTo(x_offset + squ - unit, y_offset + squ)
+    ctx.lineTo(x_offset + squ, y_offset +  squ)
     // shifted left
     ctx.lineTo(x_offset + squ, y_offset + 3 * area + unit)
     ctx.lineTo(x_offset + squ - unit, y_offset + 3 * area + unit)
