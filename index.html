@@ -9,6 +9,122 @@
     <canvas id="game">
         Browser does not support canvas.
     </canvas>
+    <aside>
+        <div class="terms">
+            <button>Terms</button>
+            <div class="info">
+                <p>Player turn: Move and shoot only once each, regardless of order. Shooting in series counts as the shot per turn. As shooting capabilities depend on movement, whether prior, successive, or in series, a player's movement and shots must be declared (or entered) at the start of their turn.</p>
+                <dl>
+                    <dt>Player Turn</dt>
+                    <dd><em>Move and shoot:</em> Move a shooter to an available square with no intermediate targets then shoot with default range.</dd>
+                    <dd><em>Shoot in series:</em> Shoot a number of intermediate targets along a path up to and at a position a shooter intends to move to. If number of intermediate targets exceeds the shooter's alternative range, the shooter can only move and replace targets up to the last one it shot down.</dd>
+                    <dd><em>Shoot and replace:</em> Shoot a target using default range, then if shot down, take the target's position. This kind of move is not available to all shooters.</dd>
+                    <dd><em>Unload:</em> Sacrifice a shooter to add its rank to an adjacent shooter.</dd>
+                    <dd><em>Bridge:</em> Join two adjacent shooters of one side together. Bridged shooters either move in tandem in any direction as many squares as the lower-ranked shooter, or one shooter can orbit the other, moving as many squares around the other as its bridge range. Bridged shooters can only shoot once between the two of them, following their individual shooting patterns. An orbitted shooter can only shoot with its default range, while the orbitting shooter can use its alternative range, not for number of targets (unless the targets are within their path of movement) but how far it can shoot. When shooting with either, use the rank of the shooter with a higher rank.</dd>
+                    <dd><em>Unbridge:</em> Break the bridge between a bridged pair of shooters. </dd>
+
+                    <dt>Rank</dt>
+                    <dd>Similar to HP, a shooter's rank is subtracted from its target's. If the target's rank becomes 0 or less, the target is shot down.</dd>
+                    
+                    <dt>Checkmate</dt>
+                    <dd>Checkmate both monarchs if present, or remaining monarch.</dd>
+                    <dd>Shoot down one monarch and checkmate the other.</dd>
+                    <dd>Enemy cannot checkmate remaining monarchs, meaning the total of pieces left for one side cannot raise or lower the rank of the remaining monarch enough to take it out.</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">Pawn</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>1</p>
+                <p><strong>Count: </strong>8</p>
+                <p><strong>Range: </strong>1<br><em>No deviation</em></p>
+                <p><strong>Movement: </strong>Move 1 square forward from position, or replace 1 shot-down target. Reverse direction next turn following upon reaching edge of board.</p>
+                <p><strong>Bridge range:</strong> 1</p>
+                <p><strong>Shooting: </strong>Shoot at a diagonal from forward direction.</p>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">Bishop</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>3</p>
+                <p><strong>Count: </strong>2</p>
+                <p><strong>Range</strong>
+                    <ul>
+                        <li>Default: 1</li>
+                        <li>Alternative: 1</li>
+                    </ul>
+                </p>
+                <p><strong>Movement: </strong>Move number of squares up to edge of board at a diagonal from position, cannot replace shot-down target.</p>
+                <p><strong>Bridge range: </strong>1</p>
+                <p><strong>Shooting: </strong>Shoot at right angles from position.</p>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">Knight</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>3</p>
+                <p><strong>Count: </strong>2</p>
+                <p><strong>Range</strong>
+                    <ul>
+                        <li>Default: 1</li>
+                        <li>Alternative: 2</li>
+                    </ul>
+                </p>
+                <p><strong>Movement: </strong>Move 2 squares at right angles from position, then 1 perpendicular (L-shape), cannot replace a shot-down target using default range.</p>
+                <p><strong>Bridge range: </strong>3</p>
+                <p><strong>Shooting: </strong>Shoot at diagonal from position.</p>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">Rook</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>5</p>
+                <p><strong>Count: </strong>2</p>
+                <p><strong>Range</strong>
+                    <ul>
+                        <li>Default: 4</li>
+                        <li>Alternative: 3</li>
+                    </ul>
+                </p>
+                <p><strong>Movement: </strong>Move any number of squares to edge of board at right angles from position.</p>
+                <p><strong>Bridge range: </strong> 2</p>
+                <p><strong>Shooting: </strong>Shoot either along path of movement, or at right angles, can shoot in series.</p>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">Queen</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>9</p>
+                <p><strong>Count: </strong>1</p>
+                <p><strong>Range</strong>
+                    <ul>
+                        <li>Default: 4</li>
+                        <li>Alternative: 1 | 4</li>
+                    </ul>
+                </p>
+                <p><strong>Movement: </strong>Move any number of squares to edge of board in one direction from position.</p>
+                <p><strong>Bridge range: </strong>8</p>
+                <p><strong>Shooting: </strong>Shoot in any direction other than movement (intended or not) using first alternative range, else if shooting in direction of movement or while in movement, use second alternative range.</p>
+            </div>
+        </div>
+        <div class="piece">
+            <button class="piece-name">King</button>
+            <div class="piece-info">
+                <p><strong>Rank: </strong>9</p>
+                <p><strong>Count: </strong>1</p>
+                <p><strong>Range</strong>
+                    <ul>
+                        <li>Default: 1</li>
+                        <li>Alternative: 1 | 8</li>
+                    </ul>
+                </p>
+                <p><strong>Movement: </strong>Move 1 square in any direction.</p>
+                <p><strong>Bridge range: </strong>1</p>
+                <p><strong>Shooting: </strong>Shoot in any direction, or sacrifice to wipe out all surrounding shooters in 1-square radius, regardless of side or rank.</p>
+            </div>
+        </div>
+    </aside>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

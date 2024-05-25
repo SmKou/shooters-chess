@@ -4,6 +4,7 @@ body {
     width: 100vw;
     height: 100vh;
     margin: 0;
+    padding: auto;
     display: flex;
     place-items: center;
     background: #5f1510;
@@ -17,6 +18,31 @@ canvas {
     min-height: 360px;
     max-height: 712px;
     height: 100vmin;
-    margin: auto;
     background: #e9d7bc;
 }
+
+aside {
+    min-width: 180px;
+    max-width: 366px;
+    width: 100vmin;
+    min-height: 360px;
+    max-height: 712px;
+    height: 100vmin;
+    border-left: 0.1px solid black;
+    background: #e9d7bc;
+    overflow-y: scroll;
+}
+
+.terms,
+.piece {
+    width: 100%;
+}
+
+.terms button,
+.piece-name {
+    width: 100%;
+    height: 2.4rem;
+}
+
+.info,
+.piece-info { display: none }

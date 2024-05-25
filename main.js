@@ -136,7 +136,8 @@ const draw_king = ({ x, y }, clr) => {}
 
 size_canvas()
 draw_board()
-draw_starship({ x: 1, y: 2 }, '#fff')
+for (let i = 1; i <= 8; ++i)
+    draw_starship({ x: i, y: 2 }, '#fff')
 
 let timeout;
 window.addEventListener('resize', () => {
