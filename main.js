@@ -49,6 +49,15 @@ const draw_board = () => {
     ui.ctx.strokeRect(edge, edge, ui.squ * 8, ui.squ * 8)
 }
 
+const draw_squares = () => {
+    ui.strokeStyle = green
+    for (let i = 0; i < max_squ ** 2; ++i) {
+        const x = edge + (i % max_squ) * ui.squ
+        const y = edge + Math.floor(i / max_squ) * ui.squ
+        ui.ctx.strokeRect(x, y, ui.squ, ui.squ)
+    }
+}
+
 const draw_starship = ({ x, y }, clr) => {
     const { ctx, squ } = ui
     const area = squ / 5
@@ -138,6 +147,7 @@ size_canvas()
 draw_board()
 for (let i = 1; i <= 8; ++i)
     draw_starship({ x: i, y: 2 }, '#fff')
+draw_squares()
 
 let timeout;
 window.addEventListener('resize', () => {
