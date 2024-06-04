@@ -6,7 +6,38 @@
     <title>Shooters Chess</title>
 </head>
 <body>
-    <canvas id="game">
+    <header>
+        <h2>Shooters Chess</h2>
+        <select id="game-info">
+            <option value="none" selected>About</option>
+            <option value="terms">Terminology</option>
+            <option value="rules">Rules</option>
+            <option value="pawn">Pawn</option>
+            <option value="bishop">Bishop</option>
+            <option value="knight">Knight</option>
+            <option value="rook">Rook</option>
+            <option value="queen">Queen</option>
+            <option value="king">King</option>
+        </select>
+    </header>
+    <main>
+        <section id="info"></section>
+        <canvas id="game">Browser does not support canvas.</canvas>
+        <section id="settings"></section>
+    </main>
+    <footer>
+        <div class="player-input">
+            <h3 id="player-lbl"></h3>
+            <button id="settings-btn">
+                <span class="btn-text">Settings</span>
+                <canvas id="settings-btn-img" width="36" height="36"></canvas>
+            </button>
+        </div>
+
+        <div id="input"
+    </footer>
+
+    <!--<canvas id="game">
         Browser does not support canvas.
     </canvas>
     <aside>
@@ -124,7 +155,7 @@
                 <p><strong>Shooting: </strong>Shoot in any direction, or sacrifice to wipe out all surrounding shooters in 1-square radius, regardless of side or rank.</p>
             </div>
         </div>
-    </aside>
+    </aside>-->
     <script type="module" src="/main.js"></script>
   </body>
 </html>
