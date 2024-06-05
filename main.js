@@ -2,7 +2,7 @@ import './style.css'
 
 const green = '#385546'
 const off_green = '#CDAA7D'
-const default_bg = '#E9D7BC'
+const bg = '#E9D7BC'
 const label = '#455C52'
 const red = '#5F1510'
 
@@ -37,7 +37,18 @@ const draw_board = () => {
     ui.fillStyle = label
     for (let i = 0; i < max_squ; ++i) {
         ui.ctx.fillText((8 - i) + "", edge / 2, edge + i * ui.squ + ui.offset)
-        ui.ctx.fillStyle(String.fromCharCode(a_code + i), edge + i * ui.squ + ui.offset, cvs.height - edge / 4)
+        ui.ctx.fillText(String.fromCharCode(a_code + i), edge + i * ui.squ + ui.offset, cvs.height - edge / 4)
+    }
+
+    let is_off_squ = false
+    for (let i = 0; i < max_squ ** 2; ++i) {
+        if (i % 8 !== 0)
+            is_off_squ = !is_off_squ
+        ui.ctx.fillStyle = is_off_squ ? green : off_green
+
+        const x = edge + (i % max_squ) * ui.squ
+        const y = edge + Math.floor(i / max_squ) * ui.squ
+        ui.ctx.fillRect(x, y, ui.squ, ui.squ)
     }
 }
 
@@ -79,3 +90,11 @@ const draw_board = () => {
     ctx.arc(0, 0, area + area / 2, 0, 2 * Math.PI)
     ctx.fill()
 })()
+
+const load = () => {
+    size_canvas()
+    draw_board()
+}
+
+window.addEventListener('load', load)
+window.addEventListener('resize', load)
