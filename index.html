@@ -22,7 +22,7 @@
         </select>
     </header>
     <main>
-        <section id="info">
+        <section id="info" class="inactive">
             <div>
                 <h3>Introduction</h3>
                 <p>On your turn, enter positions of your pieces to select them. Then fill out the corresponding fields. You can enter positions for movement (<em>move to</em>) and/or shot (<em>shoot</em>). If unloading (<em>unload to</em>) a piece, meaning to give its rank to an adjacent piece, this will replace either movement or shot.</p>
@@ -194,7 +194,7 @@
             </div>
         </section>
         <canvas id="game">Browser does not support canvas.</canvas>
-        <section id="settings">
+        <section id="settings" class="inactive">
             <fieldset>
                 <legend>Graphics</legend>
                 <input id="shooters" name="graphics" type="radio" value="shooters" checked />
@@ -253,22 +253,24 @@
     </main>
     <footer>
         <section id="move">
-            <h3 id="player-lbl"></h3>
+            <h3>Player: <span id="player">New Game</span></h3>
             <button id="settings-btn">
-                <span class="btn-text">Settings</span>
                 <canvas id="settings-btn-img" width="36" height="36"></canvas>
             </button>
         </section>
-        <section id="computer-output"></section>
-        <section id="player-input">
+        <section id="computer-output" class="inactive"></section>
+        <section id="player-input" class="inactive">
             <div class="move-input">
                 <select id="positions-opt"></select>
                 <div class="move-actions">
                     <fieldset>
                         <legend>Actions</legend>
                         <input id="movement" name="actions" type="checkbox" value="movement" />
+                        <label for="movement">Movement</label>
                         <input id="unload" name="actions" type="checkbox" value="unload" />
+                        <label for="unload">Unload</label>
                         <input id="shot" name="actions" type="checkbox" value="shot" />
+                        <label for="shot">Shot</label>
                     </fieldset>
                 </div>
                 <div id="movement-input">
