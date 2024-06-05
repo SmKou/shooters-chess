@@ -180,7 +180,53 @@
             </div>
         </section>
         <canvas id="game">Browser does not support canvas.</canvas>
-        <section id="settings"></section>
+        <section id="settings">
+            <fieldset>
+                <legend>Graphics</legend>
+                <input id="shooters" name="graphics" type="radio" value="shooters" checked />
+                <label for="shooters">Shooters</label>
+                <input id="trad-chess" name="graphics" type="radio" value="trad" />
+                <label for="trad-chess">Traditional</label>
+                <br><br>
+                <input id="animations" type="checkbox" />
+                <label for="animations">Animations</label>
+            </fieldset>
+            <fieldset>
+                <legend>Players</legend>
+                <input id="humans" name="players" type="radio" value="humans" />
+                <label for="humans">Humans only</label>
+                <input id="hci" name="players" type="radio" value="human-computer" checked />
+                <label for="hci">Human and Computer</label>
+                <input id="computer" name="players" type="radio" value="computers" />
+                <label for="computer">Computer only</label>
+            </fieldset>
+            <fieldset id="computer-1">
+                <legend>Computer 1</legend>
+                <input id="ranking-1" name="strategy-1" type="radio" value="ranking" />
+                <label for="ranking-1">Ranking</label>
+                <input id="bridging-1" name="strategy-1" type="radio" value="bridging" />
+                <label for="bridging-1">Bridging</label>
+                <input id="offensive-1" name="strategy-1" type="radio" value="offensive" />
+                <label for="offensive-1">Offensive</label>
+                <input id="defensive-1" name="strategy-1" type="radio" value="defensive" />
+                <label for="defensive-1">Defensive</label>
+                <input id="random-1" name="strategy-1" type="radio" value="random" />
+                <label for="random-1">Random</label>
+            </fieldset>
+            <fieldset id="computer-2" class="inactive">
+                <legend>Computer 2</legend>
+                <input id="ranking-2" name="strategy-2" type="radio" value="ranking" />
+                <label for="ranking-2">Ranking</label>
+                <input id="bridging-2" name="strategy-2" type="radio" value="bridging" />
+                <label for="bridging-2">Bridging</label>
+                <input id="offensive-2" name="strategy-2" type="radio" value="offensive" />
+                <label for="offensive-2">Offensive</label>
+                <input id="defensive-2" name="strategy-2" type="radio" value="defensive" />
+                <label for="defensive-2">Defensive</label>
+                <input id="random-2" name="strategy-2" type="radio" value="random" />
+                <label for="random-2">Random</label>
+            </fieldset>
+        </section>
     </main>
     <footer>
         <div class="player-input">
