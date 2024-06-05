@@ -9,7 +9,8 @@
     <header>
         <h2>Shooters Chess</h2>
         <select id="game-info">
-            <option value="none" selected>About</option>
+            <option value="" selected>Do not display info</option>
+            <option value="intro">Introduction</option>
             <option value="terms">Terminology</option>
             <option value="rules">Rules</option>
             <option value="pawn">Pawn</option>
@@ -23,9 +24,21 @@
     <main>
         <section id="info">
             <div>
+                <h3>Introduction</h3>
+                <p>On your turn, enter positions of your pieces to select them. Then fill out the corresponding fields. You can enter positions for movement (<em>move to</em>) and/or shot (<em>shoot</em>). If unloading (<em>unload to</em>) a piece, meaning to give its rank to an adjacent piece, this will replace either movement or shot.</p>
+                <p><strong>Input</strong></p>
+                <p>You will notice that selecting a piece uses a dropdown, so you can only select your pieces left on the board, uncaptured. The available positions will include any pieces you've captured.</p>
+                <p>You need not worry about entering the correct order for a move. If it's wrong, a message will appear, detailing the mistake. As you fill out the fields for your move, you will notice other fields become disabled as you cannot have more than one movement and shot per turn. To re-enable the field(s), delete one of your entries.</p>
+                <p>If you'd like to change settings of the game, such as graphics, how positions are denoted, and the players, click the settings button in the top right corner of input.</p>
+                <p><em>Note</em>: If you're going to sacrifice your king to use his bomber ability, enter either the position that he starts at or the position he moves to.</p>
+                <p><strong>Board</strong></p>
+                <p>Each piece will have its rank in the top-right corner of its square. A piece can only shoot down a piece of its rank or lower, otherwise its rank is subtracted from the rank of the shot piece.</p>
+                <p>When you enter the position of the piece you'll be using for your move, it will become selected on the board and will show you possible movements and shots.</p>
+            </div>
+            <div>
                 <h3>Terminology</h3>
                 <dl>
-                    <dt>Move</dt>
+                    <dt>Move | Maneuver</dt>
                     <dd>The actions of a player's turn, can consist of a movement and a shot.</dd>
 
                     <dt>Orientation</dt>
@@ -78,10 +91,11 @@
                     <dd>A piece receives enough damage to lower its rank to zero or less, thereby removing the piece from play.</dd>
 
                     <dt>Unload</dt>
-                    <dd>A piece adds its rank to an adjacent piece, reducing its own rank to zero and removing it from play.</dd>
+                    <dd>A piece adds its rank to an adjacent piece, reducing its own rank to zero and removing it from play. Replaces either shot or movement in a move.</dd>
 
                     <dt>Bridge</dt>
-                    <dd>A piece joins to an adjacent piece, forcing the two to either move in tandem in one direction or to orbit one another. Movement depends on the lower-ranked bridged piece's orientation, unless orbiting. Orbiting uses a bridged piece's bridge range for its movement. Shots depend on the higher-ranked bridge piece's rank and range. However, whichever piece of the two is shooting, as they cannot shoot together, use their shot orientation.</dd>
+                    <dd>A piece joins to an adjacent piece, forcing the two to either move in tandem in one direction or to orbit one another. This counts as the movement of a player's turn.</dd>
+                    <dd>Movement depends on the lower-ranked bridged piece's orientation, unless orbiting. Orbiting uses a bridged piece's bridge range for its movement. Shots depend on the higher-ranked bridge piece's rank and range. However, whichever piece of the two is shooting, as they cannot shoot together, use their shot orientation.</dd>
                     <dd>When shot by another piece, the rank of the bridged piece being shot is reduced accordingly. If shot down, half of the shot down bridged piece's rank, rounded down, is taken from the rank of the remaining piece.'</dd>
 
                     <dt>Capture</dt>
@@ -192,6 +206,15 @@
                 <label for="animations">Animations</label>
             </fieldset>
             <fieldset>
+                <legend>Positions</legend>
+                <input id="horizon-vert" name="positions" type="radio" value="hv" />
+                <label for="horizon-vert">Horizontal-Vertical: 8A</label>
+                <input id="vert-horizon" name="positions" type="radio" value="vh" />
+                <label for="vert-horizon">Vertical-Horizontal: A8</label>
+                <input id="sense" name="positions" type="radio" value="s" />
+                <label for="sense">Determine on entry: 8A | A8</label>
+            </fieldset>
+            <fieldset>
                 <legend>Players</legend>
                 <input id="humans" name="players" type="radio" value="humans" />
                 <label for="humans">Humans only</label>
@@ -236,6 +259,7 @@
                 <canvas id="settings-btn-img" width="36" height="36"></canvas>
             </button>
         </div>
+        <div class="move-input"></div>
     </footer>
     <script type="module" src="/main.js"></script>
   </body>
