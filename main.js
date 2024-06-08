@@ -38,13 +38,18 @@ const edge = 36
 
 const cvs = document.getElementById('game')
 
-const retrieve_setting = (name) => {
-    return () => document.querySelector(`input[name="${name}"]:checked`)
-}
+const retrieve_setting = (name) => () => document.querySelector(`input[name="${name}"]:checked`)
 
 const settings = {
-    graphics: () => retrieve_setting('graphics'),
-    animations: () => retrieve_setting('animations')
+    graphics: retrieve_setting('graphics'),
+    animations: retrieve_setting('animations'),
+    colors: retrieve_setting('colors'),
+    orientation: retrieve_setting('positions'),
+    players: retrieve_setting('playeres'),
+    computer_player: [
+        retrieve_setting('strategy-1'),
+        retrieve_setting('strategy-2')
+    ]
 }
 
 const ui = {
@@ -146,9 +151,10 @@ const size_canvas = () => {
 }
 
 const draw_board = () => {
+    if (settings.colors().value !== ui.color_scheme)
+        ui.color_scheme = settings.colors().value
     ui.squ = (cvs.width - 2 * edge) / 8
     ui.offset = ui.squ / 2
-
     ui.ctx.font = '28px sans-serif'
     ui.ctx.textAlign = 'center'
     ui.fillStyle = colors.label
@@ -156,13 +162,11 @@ const draw_board = () => {
         ui.ctx.fillText((8 - i) + "", edge / 2, edge + i * ui.squ + ui.offset)
         ui.ctx.fillText(String.fromCharCode(a_code + i), edge + i * ui.squ + ui.offset, cvs.height - edge / 4)
     }
-
     let is_off_squ = false
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_off_squ = !is_off_squ
         ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme].dark_board : colors[ui.color_scheme].light_board
-
         const x = edge + (i % max_squ) * ui.squ
         const y = edge + Math.floor(i / max_squ) * ui.squ
         ui.ctx.fillRect(x, y, ui.squ, ui.squ)
