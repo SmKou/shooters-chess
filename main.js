@@ -6,16 +6,30 @@ const bg = '#E9D7BC'
 const label = '#455C52'
 const red = '#5F1510'
 
-const solid_colors = {
-    can_shoot: '#F44336',
-    can_move: '#3F51B5',
-    can_series: '#9C27B0'
-}
-
-const faded_colors = {
-    can_shoot: '#E57373',
-    can_move: '#7986CB',
-    can_series: '#BA68C8'
+const colors = {
+    background: '#E9D7BC',
+    label: '#455C52',
+    classic: {
+        light_board: '#CDAA7D',
+        dark_board: '#385546',
+        can_shoot: '',
+        can_move: '',
+        can_series: ''
+    },
+    solid: {
+        light_board: '#FFF9C4',
+        dark_board: '#26A69A',
+        can_shoot: '#F44336',
+        can_move: '#3F51B5',
+        can_series: '#9C27B0'
+    },
+    faded: {
+        light_board: '#C8E6C9',
+        dark_board: '#4CAF50',
+        can_shoot: '#E57373',
+        can_move: '#7986CB',
+        can_series: '#BA68C8'
+    }
 }
 
 const a_code = 65
@@ -26,6 +40,7 @@ const cvs = document.getElementById('game')
 
 const ui = {
     ctx: '',
+    color_scheme: 'classic'
 }
 
 const measure = {
@@ -118,7 +133,6 @@ const pieces = {
 const size_canvas = () => {
     cvs.width = cvs.clientWidth
     cvs.height = cvs.clientHeight
-
     ui.ctx = cvs.getContext('2d')
 }
 
@@ -128,7 +142,7 @@ const draw_board = () => {
 
     ui.ctx.font = '28px sans-serif'
     ui.ctx.textAlign = 'center'
-    ui.fillStyle = label
+    ui.fillStyle = colors.label
     for (let i = 0; i < max_squ; ++i) {
         ui.ctx.fillText((8 - i) + "", edge / 2, edge + i * ui.squ + ui.offset)
         ui.ctx.fillText(String.fromCharCode(a_code + i), edge + i * ui.squ + ui.offset, cvs.height - edge / 4)
@@ -138,7 +152,7 @@ const draw_board = () => {
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_off_squ = !is_off_squ
-        ui.ctx.fillStyle = is_off_squ ? green : off_green
+        ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme][dark_board] : colors[ui.color_scheme][light_board]
 
         const x = edge + (i % max_squ) * ui.squ
         const y = edge + Math.floor(i / max_squ) * ui.squ
@@ -157,7 +171,7 @@ const draw_pieces = () => {}
     const t1 = [ [0, -3 * area], [area, -area], [-area, -area] ]
     const t2 = [ [0, 3 * area], [-area, area], [area, area] ]
 
-    ctx.fillStyle = off_green
+    ctx.fillStyle = off_green colors[ui.color_scheme][light_board]
 
     const tri = t => {
         ctx.beginPath()
@@ -181,7 +195,7 @@ const draw_pieces = () => {}
         tri(t2)
     }
 
-    ctx.fillStyle = red
+    ctx.fillStyle = colors.background
     ctx.beginPath()
     ctx.arc(0, 0, area + area / 2, 0, 2 * Math.PI)
     ctx.fill()
