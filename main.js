@@ -45,7 +45,7 @@ const settings = {
     animations: retrieve_setting('animations'),
     colors: retrieve_setting('colors'),
     orientation: retrieve_setting('positions'),
-    players: retrieve_setting('playeres'),
+    players: retrieve_setting('players'),
     computer_player: [
         retrieve_setting('strategy-1'),
         retrieve_setting('strategy-2')
@@ -54,28 +54,33 @@ const settings = {
 
 const ui = {
     ctx: '',
-    color_scheme: 'classic'
-}
-
-const measure = {
     squ: 0,
-    offset: 0
+    offset: 0,
+    color_scheme: 'classic',
+    game: {
+        current_player: true
+    }
 }
 
 const new_game = () => {
-
-    const board = [
-        ['white-rook-left', 'white-knight-left', 'white-bishop-left', 'white-king', 'white-queen', 'white-bishop-right', 'white-knight-right', 'white-rook-right'],
-        ['white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8'],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7', 'black-pawn-8'],
-        ['black-rook-left', 'black-knight-left', 'black-bishop-left', 'black-king', 'black-queen', 'black-bishop-right', 'black-knight-right', 'black-rook-right']
+    ui.game.board = [
+        // first row fr. bottom
+        'white-rook-left', 'white-knight-left', 'white-bishop-left', 'white-king', 'white-queen', 'white-bishop-right', 'white-knight-right', 'white-rook-right',
+        // second row
+        'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8',
+        // third row
+        '', '', '', '', '', '', '', '',
+        // fourth row
+        '', '', '', '', '', '', '', '',
+        // fifth row
+        '', '', '', '', '', '', '', '',
+        // sixth row
+        '', '', '', '', '', '', '', '',
+        // seventh row
+        'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7', 'black-pawn-8',
+        'black-rook-left', 'black-knight-left', 'black-bishop-left', 'black-king', 'black-queen', 'black-bishop-right', 'black-knight-right', 'black-rook-right'
     ]
-
-    const playing_pieces = {
+    ui.game.playing_pieces = {
         white: {
             king: { is_on_board: true, rank: 9, bridge: '', captured: false },
             queen: { is_on_board: true, rank: 9, captured: false },
@@ -129,14 +134,12 @@ const new_game = () => {
             ]
         }
     }
-
-    return { board, playing_pieces }
 }
 
-
-
 const pieces = {
-    king: {},
+    king: {
+
+    },
     queen: {},
     rook: {},
     knight: {},
@@ -144,19 +147,52 @@ const pieces = {
     pawn: {}
 }
 
+const get_pieces = (side) => {
+
+}
+const get_piece = (pos) => {}
+
 const size_canvas = () => {
     cvs.width = cvs.clientWidth
     cvs.height = cvs.clientHeight
     ui.ctx = cvs.getContext('2d')
+
+    ui.ctx.font = '28px sans-serif'
+    ui.ctx.textAlign = 'center'
+
+    ui.squ = (cvs.width - 2 * edge) / 8
+    ui.offset = ui.squ / 2
+}
+
+const testing_colors = [
+    '2C',
+    '2F',
+    '3D',
+    '3G',
+    '4C',
+    '4F'
+]
+
+const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
+const pos_coord = (idx) => (
+    const x = idx % max_squ
+    const y = Math.floor(idx / max_squ)
+
+    const nums = Object.values(alpha)
+    const i = nums.indexOf(x)
+    const a = alpha[Object.keys(alpha)[i]]
+
+    return `${x}${y}`
+)
+const pos_idx = (coord) => {
+    if (isNaN(coord[0]))
+        return alpha[coord[0]] + 8 * Number(coord[1])
+    return alpha[coord[1]] + 8 * Number(coord[0])
 }
 
 const draw_board = () => {
     if (settings.colors().value !== ui.color_scheme)
         ui.color_scheme = settings.colors().value
-    ui.squ = (cvs.width - 2 * edge) / 8
-    ui.offset = ui.squ / 2
-    ui.ctx.font = '28px sans-serif'
-    ui.ctx.textAlign = 'center'
     ui.fillStyle = colors.label
     for (let i = 0; i < max_squ; ++i) {
         ui.ctx.fillText((8 - i) + "", edge / 2, edge + i * ui.squ + ui.offset)
@@ -166,6 +202,7 @@ const draw_board = () => {
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_off_squ = !is_off_squ
+        if
         ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme].dark_board : colors[ui.color_scheme].light_board
         const x = edge + (i % max_squ) * ui.squ
         const y = edge + Math.floor(i / max_squ) * ui.squ
@@ -173,7 +210,9 @@ const draw_board = () => {
     }
 }
 
-const draw_pieces = () => {}
+const draw_pieces = () => {
+
+}
 
 (() => {
     const cvs = document.getElementById('settings-btn-img')
