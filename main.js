@@ -21,6 +21,83 @@ const measure = {
     offset: 0
 }
 
+const board = [
+    ['white-rook-left', 'white-knight-left', 'white-bishop-left', 'white-king', 'white-queen', 'white-bishop-right', 'white-knight-right', 'white-rook-right'],
+    ['white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8'],
+    ['', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', '', ''],
+    ['black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7', 'black-pawn-8'],
+    ['black-rook-left', 'black-knight-left', 'black-bishop-left', 'black-king', 'black-queen', 'black-bishop-right', 'black-knight-right', 'black-rook-right']
+]
+
+const pieces = {
+
+}
+
+const playing_pieces = {
+    white: {
+        king: { is_on_board: true, rank: 9, bridge: '', captured: false },
+        queen: { is_on_board: true, rank: 9, captured: false },
+        rook: {
+            left: { is_on_board: true, rank: 5, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 5, bridge: '', captured: false }
+        },
+        knight: {
+            left: { is_on_board: true, rank: 3, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 3, bridge: '', captured: false }
+        },
+        bishop: {
+            left: { is_on_board: true, rank: 3, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 3, bridge: '', captured: false }
+        },
+        pawn: [
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false }
+        ]
+    },
+    black: {
+        king: { is_on_board: true, rank: 9, bridge: '', captured: false },
+        queen: { is_on_board: true, rank: 9, captured: false },
+        rook: {
+            left: { is_on_board: true, rank: 5, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 5, bridge: '', captured: false }
+        },
+        knight: {
+            left: { is_on_board: true, rank: 3, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 3, bridge: '', captured: false }
+        },
+        bishop: {
+            left: { is_on_board: true, rank: 3, bridge: '', captured: false },
+            right: { is_on_board: true, rank: 3, bridge: '', captured: false }
+        },
+        pawn: [
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false },
+            { is_on_board: true, rank: 1, bridge: '', captured: false }
+        ]
+    }
+}
+
+const chess = {
+    board: ,
+    pieces: {
+    },
+
+}
+
 const size_canvas = () => {
     cvs.width = cvs.clientWidth
     cvs.height = cvs.clientHeight
@@ -51,6 +128,8 @@ const draw_board = () => {
         ui.ctx.fillRect(x, y, ui.squ, ui.squ)
     }
 }
+
+const draw_pieces = () => {}
 
 (() => {
     const cvs = document.getElementById('settings-btn-img')
