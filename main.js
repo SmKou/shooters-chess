@@ -12,9 +12,9 @@ const colors = {
     classic: {
         light_board: '#CDAA7D',
         dark_board: '#385546',
-        can_shoot: '',
-        can_move: '',
-        can_series: ''
+        can_shoot: 'red',
+        can_move: 'blue',
+        can_series: 'purple'
     },
     solid: {
         light_board: '#FFF9C4',
@@ -67,7 +67,7 @@ const new_game = () => {
         // first row fr. bottom
         'white-rook-left', 'white-knight-left', 'white-bishop-left', 'white-king', 'white-queen', 'white-bishop-right', 'white-knight-right', 'white-rook-right',
         // second row
-        'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8',
+        'white-pawn-0', 'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7',
         // third row
         '', '', '', '', '', '', '', '',
         // fourth row
@@ -77,7 +77,7 @@ const new_game = () => {
         // sixth row
         '', '', '', '', '', '', '', '',
         // seventh row
-        'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7', 'black-pawn-8',
+        'black-pawn-0', 'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7',
         'black-rook-left', 'black-knight-left', 'black-bishop-left', 'black-king', 'black-queen', 'black-bishop-right', 'black-knight-right', 'black-rook-right'
     ]
     ui.game.playing_pieces = {
@@ -164,17 +164,8 @@ const size_canvas = () => {
     ui.offset = ui.squ / 2
 }
 
-const testing_colors = [
-    '2C',
-    '2F',
-    '3D',
-    '3G',
-    '4C',
-    '4F'
-]
-
 const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
-const pos_coord = (idx) => (
+const pos_coord = (idx) => {
     const x = idx % max_squ
     const y = Math.floor(idx / max_squ)
 
@@ -183,11 +174,20 @@ const pos_coord = (idx) => (
     const a = alpha[Object.keys(alpha)[i]]
 
     return `${x}${y}`
-)
+}
 const pos_idx = (coord) => {
     if (isNaN(coord[0]))
         return alpha[coord[0]] + 8 * Number(coord[1])
     return alpha[coord[1]] + 8 * Number(coord[0])
+}
+
+const test = {
+    10: colors[ui.color_scheme].can_shoot,
+    13: colors[ui.color_scheme].can_shoot,
+    19: colors[ui.color_scheme].can_move,
+    22: colors[ui.color_scheme].can_move,
+    26: colors[ui.color_scheme].can_series,
+    29: colors[ui.color_scheme].can_series
 }
 
 const draw_board = () => {
@@ -202,13 +202,39 @@ const draw_board = () => {
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_off_squ = !is_off_squ
-        if
-        ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme].dark_board : colors[ui.color_scheme].light_board
-        const x = edge + (i % max_squ) * ui.squ
-        const y = edge + Math.floor(i / max_squ) * ui.squ
+        if (test.hasOwnProperty(i))
+            ui.ctx.fillStyle = test[i]
+        else
+            ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme].dark_board : colors[ui.color_scheme].light_board
+        const x = (i % max_squ + 1) * ui.squ - edge
+        const y = (8 - Math.floor(i / max_squ)) * ui.squ - 1.5 * edge
         ui.ctx.fillRect(x, y, ui.squ, ui.squ)
+
+        if (ui.game.board[i]) {
+            const piece_path = ui.game.board[i].split('-')
+            let piece_info = ui.game.playing_pieces
+            for (const idx of piece_path)
+                piece_info = piece_info[idx]
+            if (!piece_info.is_on_board) continue;
+            const side = piece_path.includes('white')
+
+            ui.ctx.fillStyle = side ? 'white' : 'black'
+            ui.ctx.strokeStyle = !side ? 'white' : 'black'
+            ui.ctx.lineWidth = 10
+
+            ui.ctx.beginPath()
+            ui.ctx.arc(x + ui.squ / 2, y + ui.squ / 2, ui.squ / 4, 0, 2 * Math.PI)
+            ui.ctx.stroke()
+            ui.ctx.fill()
+
+            ui.ctx.fillText(piece_info.rank, x + ui.squ / 8, y + ui.squ / 4 + ui.squ / 8)
+            ui.ctx.fillStyle = side ? 'blue' : 'red'
+            ui.ctx.fillText(piece_path[1][0].toUpperCase(), x + ui.squ / 2, y + ui.squ * 3 / 4 - ui.squ / 8)
+        }
     }
 }
+
+const draw_king = () => {}
 
 const draw_pieces = () => {
 
@@ -253,8 +279,14 @@ const draw_pieces = () => {
     ctx.fill()
 })()
 
+document.getElementById('settings-btn').addEventListener('click', () => {
+    document.getElementById('settings').classList.toggle('inactive')
+})
+document.getElementById('settings').addEventListener('click', draw_board)
+
 const load = () => {
     size_canvas()
+    new_game()
     draw_board()
 }
 
