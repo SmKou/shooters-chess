@@ -6,6 +6,18 @@ const bg = '#E9D7BC'
 const label = '#455C52'
 const red = '#5F1510'
 
+const solid_colors = {
+    can_shoot: '#F44336',
+    can_move: '#3F51B5',
+    can_series: '#9C27B0'
+}
+
+const faded_colors = {
+    can_shoot: '#E57373',
+    can_move: '#7986CB',
+    can_series: '#BA68C8'
+}
+
 const a_code = 65
 const max_squ = 8
 const edge = 36
@@ -22,6 +34,7 @@ const measure = {
 }
 
 const new_game = () => {
+
     const board = [
         ['white-rook-left', 'white-knight-left', 'white-bishop-left', 'white-king', 'white-queen', 'white-bishop-right', 'white-knight-right', 'white-rook-right'],
         ['white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7', 'white-pawn-8'],
@@ -94,7 +107,12 @@ const new_game = () => {
 
 
 const pieces = {
-
+    king: {},
+    queen: {},
+    rook: {},
+    knight: {},
+    bishop: {},
+    pawn: {}
 }
 
 const size_canvas = () => {
