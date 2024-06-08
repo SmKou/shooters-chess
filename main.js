@@ -38,6 +38,15 @@ const edge = 36
 
 const cvs = document.getElementById('game')
 
+const retrieve_setting = (name) => {
+    return () => document.querySelector(`input[name="${name}"]:checked`)
+}
+
+const settings = {
+    graphics: () => retrieve_setting('graphics'),
+    animations: () => retrieve_setting('animations')
+}
+
 const ui = {
     ctx: '',
     color_scheme: 'classic'
@@ -152,7 +161,7 @@ const draw_board = () => {
     for (let i = 0; i < max_squ ** 2; ++i) {
         if (i % 8 !== 0)
             is_off_squ = !is_off_squ
-        ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme][dark_board] : colors[ui.color_scheme][light_board]
+        ui.ctx.fillStyle = is_off_squ ? colors[ui.color_scheme].dark_board : colors[ui.color_scheme].light_board
 
         const x = edge + (i % max_squ) * ui.squ
         const y = edge + Math.floor(i / max_squ) * ui.squ
@@ -171,7 +180,7 @@ const draw_pieces = () => {}
     const t1 = [ [0, -3 * area], [area, -area], [-area, -area] ]
     const t2 = [ [0, 3 * area], [-area, area], [area, area] ]
 
-    ctx.fillStyle = off_green colors[ui.color_scheme][light_board]
+    ctx.fillStyle = colors[ui.color_scheme].light_board
 
     const tri = t => {
         ctx.beginPath()
