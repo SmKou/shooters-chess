@@ -27,19 +27,18 @@ const edge = 36
 
 const cvs = document.getElementById('game')
 
-const retrieve_setting = (name) => () => document.querySelector(`input[name="${name}"]:checked`)
+const get_element = (name, value) => {
+    const elements = document.getElementsByName(name)
+    for (const element of elements)
+        console.log(element, element.checked)
 
-const settings = {
-    graphics: retrieve_setting('graphics'),
-    animations: retrieve_setting('animations'),
-    colors: retrieve_setting('colors'),
-    orientation: retrieve_setting('positions'),
-    players: retrieve_setting('players'),
-    computer_player: [
-        retrieve_setting('strategy-1'),
-        retrieve_setting('strategy-2')
-    ]
+    const setting = document.querySelector('input[name="' + name + ':checked"]')
+    if (!setting) console.error('no element')
+    if (setting.name === name) console.log('name match')
+    if (setting.checked) console.log('checked')
 }
+
+const retrieve_setting = (name) => () => document.querySelector(`input[name="${name}"]:checked`)
 
 const ui = {
     ctx: '',
@@ -176,8 +175,10 @@ const test = {
 }
 
 const draw_board = () => {
-    if (settings.colors().value !== ui.color_scheme)
+
+    if (colors_elm.value !== ui.color_scheme)
         ui.color_scheme = settings.colors().value
+
     ui.fillStyle = colors.label
     for (let i = 0; i < max_squ; ++i) {
         ui.ctx.fillText((8 - i) + "", edge / 2, edge + i * ui.squ + ui.offset)
@@ -270,7 +271,9 @@ document.getElementById('settings').addEventListener('click', draw_board)
 const load = () => {
     size_canvas()
     new_game()
-    draw_board()
+    get_element("graphics", "coins")
+    get_element("colors", "classic")
+    // draw_board()
 }
 
 window.addEventListener('load', load)

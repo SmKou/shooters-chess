@@ -21,7 +21,7 @@ html { font-size: 62.5% }
 
     --classic-1: '#CDAA7D';
     --classic-2: '#385546';
-    --classic-3: '#';
+    --classic-3: '#899878';
 
     --contrast-1: '#E4E6C3';
     --contrast-2: '#222725';
@@ -86,27 +86,42 @@ main canvas {
 }
 
 #settings {
-padding: 1.2rem;
-padding-top: 2.4rem;
-background: var(--bg);
-overflow-y: scroll;
+    padding: 1.2rem;
+    padding-top: 2.4rem;
+    background: var(--bg);
+    overflow-y: scroll;
 }
 
 #settings fieldset {
-margin-top: 2rem;
-margin-bottom: 2rem;
-padding: 2rem;
-border: 0.1rem solid black;
-display: grid;
-grid-template-columns: 3rem 1fr;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border: 0.1rem solid black;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
 }
 
 #settings fieldset:first-child { margin-top: 0 }
-#settings #animations, #settings #animations + label { margin-top: 1.6rem }
+#settings #animations, #settings #animations + label {
+    margin-top: 1.6rem
+}
 
 #settings legend {
     padding: 0.4rem 0.6rem;
 }
+
+div.color {
+    width: 3.6rem;
+    height: 3.6rem;
+}
+
+.classic-1 { background: var(--classic-1) }
+.classic-2 { background: var(--classic-2) }
+.classic-3 { background: var(--classic-3) }
+
+.contrast-1 { background: var(--contrast-1) }
+.contrast-2 { background: var(--contrast-2) }
+.contrast-3 { background: var(--contrast-3) }
 
 input[name="colors"] + label {
     width: calc(36px * 5);
