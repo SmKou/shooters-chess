@@ -12,23 +12,12 @@ const colors = {
     classic: {
         light_board: '#CDAA7D',
         dark_board: '#385546',
-        can_shoot: 'red',
-        can_move: 'blue',
-        can_series: 'purple'
+        valid_move: ''
     },
-    solid: {
-        light_board: '#FFF9C4',
-        dark_board: '#26A69A',
-        can_shoot: '#F44336',
-        can_move: '#3F51B5',
-        can_series: '#9C27B0'
-    },
-    faded: {
-        light_board: '#C8E6C9',
-        dark_board: '#4CAF50',
-        can_shoot: '#E57373',
-        can_move: '#7986CB',
-        can_series: '#BA68C8'
+    contrast: {
+        light_board: '#E4E6C3',
+        dark_board: '222725',
+        valid_move: '#899878'
     }
 }
 
@@ -56,7 +45,7 @@ const ui = {
     ctx: '',
     squ: 0,
     offset: 0,
-    color_scheme: 'classic',
+    color_scheme: 'contrast',
     game: {
         current_player: true
     }
@@ -182,12 +171,8 @@ const pos_idx = (coord) => {
 }
 
 const test = {
-    10: colors[ui.color_scheme].can_shoot,
-    13: colors[ui.color_scheme].can_shoot,
-    19: colors[ui.color_scheme].can_move,
-    22: colors[ui.color_scheme].can_move,
-    26: colors[ui.color_scheme].can_series,
-    29: colors[ui.color_scheme].can_series
+    10: colors[ui.color_scheme].valid_move,
+    13: colors[ui.color_scheme].valid_move
 }
 
 const draw_board = () => {
@@ -279,9 +264,7 @@ const draw_pieces = () => {
     ctx.fill()
 })()
 
-document.getElementById('settings-btn').addEventListener('click', () => {
-    document.getElementById('settings').classList.toggle('inactive')
-})
+document.getElementById('settings-btn').addEventListener('click', () => document.getElementById('settings').classList.toggle('inactive'))
 document.getElementById('settings').addEventListener('click', draw_board)
 
 const load = () => {

@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shooters Chess</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -203,18 +206,23 @@
                 <label for="trad-chess">Traditional</label>
                 <input id="coins" name="graphics" type="radio" value="coins" checked />
                 <label for="coins">Coins</label>
-                <br><br>
                 <input id="animations" type="checkbox" />
                 <label for="animations">Animations</label>
             </fieldset>
             <fieldset>
                 <legend>Color Scheme</legend>
                 <input id="classic" name="colors" type="radio" value="classic" checked />
-                <label for="classic"></label>
-                <input id="solid" name="colors" type="radio" value="solid" />
-                <label for="solid"></label>
-                <input id="faded" name="colors" type="radio" value="faded" />
-                <label for="faded"></label>
+                <label for="classic">
+                    <div class="color classic-1"></div>
+                    <div class="color classic-2"></div>
+                    <div class="color classic-3"></div>
+                </label>
+                <input id="contrast" name="colors" type="radio" value="contrast" />
+                <label for="contrast">
+                    <div class="color contrast-1"></div>
+                    <div class="color contrast-2"></div>
+                    <div class="color contrast-3"></div>
+                </label>
             </fieldset>
             <fieldset>
                 <legend>Positions</legend>
