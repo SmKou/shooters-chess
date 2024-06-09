@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shooters Chess</title>
+</head>
+<body>
+    <section id="small"></section>
+    <section id="medium"></section>
+    <section id="large"></section>
+    <script>
+        const make_canvas = (size) => {
+            const cvs = document.createElement('canvas')
+            switch (size) {
+                case 'small':
+                    cvs.width = 36
+                    cvs.style.width = '36px'
+                    cvs.height = 36
+                    cvs.style.height = '36px'
+                    break
+                case 'medium':
+                    cvs.width = 57
+                    cvs.style.width = '57px'
+                    cvs.height = 57
+                    cvs.style.height = '57px'
+                    break
+                case 'large':
+                    cvs.width = 151
+                    cvs.style.width = '151px'
+                    cvs.height = 151
+                    cvs.style.height = '151px'
+                    break
+            }
+            return cvs.getContext('2d')
+        }
+
+        const px = (size) => {
+            switch (size) {
+                case 'small':
+                    return { sect: 36 / 4, area: 36 / 16, unit: 36 / 32 }
+                case 'medium':
+                    return { sect: 57 / 4, area: 57 / 16, unit: 57 / 32 }
+                case 'large':
+                    return { sect: 151 / 4, area: 151 / 16, unit: 151 / 32 }
+            }
+        }
+
+        const king = (cvs, style) => {
+            switch (style) => {
+
+            }
+        }
+
+        document.append(king(make_canvas('small'), 'small'))
+        document.append(king(make_canvas('medium'), 'medium'))
+        document.append(king(make_canvas('large'), 'large'))
+    </script>
+</body>
+</html>

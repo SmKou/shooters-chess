@@ -10,19 +10,15 @@
 html { font-size: 62.5% }
 
 :root {
-    --settings-background: #E9D7BC;
-    --labels: '#455c52'
+    --main-background: #E9D7BC;
+    --labels: #455c52;
 
-    --green: #385546;
-    --off-green: #CDAA7D;
-    --bg: #E9D7BC; // #D8B589;
-    --label: #455C52;
-    --red: #5F1510;
-
+    // shades of green
     --classic-1: '#CDAA7D';
     --classic-2: '#385546';
     --classic-3: '#899878';
 
+    // moss green
     --contrast-1: '#E4E6C3';
     --contrast-2: '#222725';
     --contrast-3: '#899878';
@@ -33,21 +29,12 @@ body {
     height: 100vh;
     margin: 0;
     display: grid;
-    background: var(--bg);
     font-size: 1.6rem;
     font-family: 'Reddit Mono'
 }
 
-h2 {
-    width: 100%;
-    color: white;
-    font-size: 3.6rem;
-}
-
-h3 {
-    width: 100%;
-    color: white;
-    font-size: 2.4rem;
+@media screen and (min-height: 1080px) {
+    body { font-size: 2.4rem }
 }
 
 header, footer {
@@ -60,8 +47,13 @@ header {
     grid-area: header;
 }
 
-#game-info {
-    width: 100%;
+header div button {
+    width: 3.6rem;
+    height: 3.6rem;
+}
+
+footer {
+    grid-area: footer;
 }
 
 main {
@@ -69,117 +61,13 @@ main {
     grid-area: main;
     width: 100vmin;
     height: 100vmin;
-    background: var(--bg);
+    background: var(--main-background)
 }
 
-main section {
+#info {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    right: 0;
     height: 100%;
 }
-
-main canvas {
-    width: 100%;
-    height: 100%;
-}
-
-#settings {
-    padding: 1.2rem;
-    padding-top: 2.4rem;
-    background: var(--bg);
-    overflow-y: scroll;
-}
-
-#settings fieldset {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    padding: 2rem;
-    border: 0.1rem solid black;
-    display: grid;
-    grid-template-columns: 3rem 1fr;
-}
-
-#settings fieldset:first-child { margin-top: 0 }
-#settings #animations, #settings #animations + label {
-    margin-top: 1.6rem
-}
-
-#settings legend {
-    padding: 0.4rem 0.6rem;
-}
-
-div.color {
-    width: 3.6rem;
-    height: 3.6rem;
-}
-
-.classic-1 { background: var(--classic-1) }
-.classic-2 { background: var(--classic-2) }
-.classic-3 { background: var(--classic-3) }
-
-.contrast-1 { background: var(--contrast-1) }
-.contrast-2 { background: var(--contrast-2) }
-.contrast-3 { background: var(--contrast-3) }
-
-input[name="colors"] + label {
-    width: calc(36px * 5);
-    height: 36px;
-    border: 0.1rem solid black;
-}
-
-footer {
-    grid-area: footer;
-    border-top: 0.1rem solid white;
-}
-
-#settings-btn {
-    border: none;
-    border-radius: 0.9rem;
-    background: transparent;
-}
-
-#settings-btn-img {
-    display: flex;
-    justify-content: center;
-}
-
-@media screen and (orientation: landscape) {
-    body {
-        grid-template-columns: 100vmin 1fr;
-        grid-template-rows: 20rem 1fr;
-        grid-template-areas:
-            "main header"
-            "main footer";
-    }
-
-    header, footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    header {
-        max-height: 18rem;
-    }
-
-    footer section {
-        width: 100%;
-    }
-
-    #move {
-        display: grid;
-        grid-template-columns: 1fr 4.8rem;
-    }
-}
-
-@media screen and (orientation: portrait) {
-    body {
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr 100vmin 1fr;
-    }
-}
-
-
-.inactive { display: none }
