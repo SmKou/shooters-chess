@@ -1,71 +1,196 @@
 import './style.css'
 
-const graphics = ['shooters', 'trad', 'coins']
-const background = ['plain', 'stars']
-
+const a_code = 65
+const max_squ = 8
+const edge = 36
+const alpha = {
+    A: 0,
+    B: 1,
+    C: 2,
+    D: 3,
+    E: 4,
+    F: 5,
+    G: 6,
+    H: 7
+}
 const colors = {
     background: '#E9D7BC',
     label: '#455C52',
-    classic: {
-        light_board: '#CDAA7D',
-        dark_board: '#385546',
-        valid_move: '#899878'
-    },
-    contrast: {
-        light_board: '#E4E6C3',
-        dark_board: '#222725',
-        valid_move: '#899878'
-    }
+    light_squ: '#CDAA7D',
+    dark_squ: '#385546'
 }
-
-const a_code = 65
-const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
-const max_squ = 8
-const edge = 36
 
 const cvs = document.getElementById('game')
 const ui = {
     ctx: '',
     squ: 0,
     offset: 0,
-    graphics: 'coins',
-    background: 'plain',
-    anims: false,
-    colors: 'classic',
-    players: 1
+    area: 0,
+    unit: 0
 }
 
-
-
-document.getElementById('graphics-btn').addEventListener('click', () => {
-    let idx = graphics.indexOf(ui.graphics) + 1
-    if (idx === graphics.length)
-        idx = 0
-    ui.graphics = graphics[idx]
-    const cvs = document.getElementById('graphics-btn-img')
+const size_canvas = () => {
     cvs.width = cvs.clientWidth
     cvs.height = cvs.clientHeight
-    const ctx = document.getContext('2d')
-    switch (ui.graphics) {
-        case 'shooters':
-        case 'trad':
-        case 'coins':
-        default:
-    }
-})
+    ui.ctx = cvs.getContext('2d')
+    ui.ctx.font = '28px sans-serif'
+    ui.ctx.textAlign = 'center'
 
+    ui.squ = (cvs.width - 2 * edge) / 8
+    ui.offset = ui.squ / 2
 
-// Populate game info
-
-const game_info = document.getElementById('game-info')
-
-const game_info_option = (child) => {
-    const option = document.createElement('option')
-    const info = typeof child === 'string' ? child : child.className
-    option.value = info
-    option.append(document.createTextNode(info.className[0] + info.className.slice(1)))
-    return option
+    ui.area = ui.squ / 8
+    ui.unit = ui.area / 2
 }
-game_info.append(game_info_option('Do not display info'))
-document.getElementById('info').childNodes.forEach(child => game_info.append(game_info_option(child))
 
+const game = {
+    player: false, // true: white
+    valid: {}
+}
+const new_game = () => {
+    game.board = [
+        // first row fr. bottom
+        'white-rook-queen', 'white-knight-queen', 'white-bishop-queen', 'white-king', 'white-queen', 'white-bishop-king', 'white-knight-king', 'white-rook-king',
+        // second row
+        'white-pawn-0', 'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7',
+        // third row
+        '', '', '', '', '', '', '', '',
+        // fourth row
+        '', '', '', '', '', '', '', '',
+        // fifth row
+        '', '', '', '', '', '', '', '',
+        // sixth row
+        '', '', '', '', '', '', '', '',
+        // seventh row
+        'black-pawn-0', 'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7',
+        'black-rook-queen', 'black-knight-queen', 'black-bishop-queen', 'black-king', 'black-queen', 'black-bishop-king', 'black-knight-king', 'black-rook-king'
+    ]
+
+    // queen = left side, king = right side
+    game.pieces = {
+        white: {
+            king: { rank: 9, bridge: '', captured: false },
+            queen: { rank: 9, captured: false },
+            rook: {
+                queen: { rank: 5, bridge: '', captured: false },
+                king: { rank: 5, bridge: '', captured: false }
+            },
+            knight: {
+                queen: { rank: 3, bridge: '', captured: false },
+                king: { rank: 3, bridge: '', captured: false }
+            },
+            bishop: {
+                queen: { rank: 3, bridge: '', captured: false },
+                king: { rank: 3, bridge: '', captured: false }
+            },
+            pawn: [
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false }
+            ]
+        },
+        black: {
+            king: { rank: 9, bridge: '', captured: false },
+            queen: { rank: 9, captured: false },
+            rook: {
+                queen: { rank: 5, bridge: '', captured: false },
+                king: { rank: 5, bridge: '', captured: false }
+            },
+            knight: {
+                queen: { rank: 3, bridge: '', captured: false },
+                king: { rank: 3, bridge: '', captured: false }
+            },
+            bishop: {
+                queen: { rank: 3, bridge: '', captured: false },
+                king: { rank: 3, bridge: '', captured: false }
+            },
+            pawn: [
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false },
+                { rank: 1, bridge: '', captured: false }
+            ]
+        }
+    }
+}
+
+const pos_coord = (idx) => {
+    const idx_fr_vals = Object.values(alpha).indexOf(idx % max_squ)
+    const x = Object.keys(alpha)[idx_fr_vals]
+    const y = Math.floor(idx / max_squ) + 1
+    return `${x}${y}`
+}
+
+const pos_idx = (coord) => alpha[coord[0]] + 8 * Number(coord[1])
+
+const draw_labels = () => {
+    ui.ctx.fillStyle = colors.label
+    for (let i = 0; i < max_squ; ++i) {
+        ui.ctx.fillText(
+            (8 - i) + "",
+            edge / 2 + edge / 8,
+            edge + i * ui.squ + ui.offset
+        )
+        ui.ctx.fillText(
+            String.fromCharCode(a_code + i),
+            edge + i * ui.squ + ui.offset + edge / 4,
+            cvs.height - edge / 4
+        )
+    }
+}
+
+const draw_board = () => {
+    let is_dark_squ = false
+    for (let i = 0; i < max_squ ** 2; ++i) {
+        if (i % 8 !== 0) is_dark_squ = !is_dark_squ
+        ui.ctx.fillStyle = is_dark_squ ? colors.dark_squ : colors.light_squ
+
+        const x = (i % max_squ + 1) * ui.squ - edge
+        const y = (8 - Math.floor(i / max_squ)) * ui.squ - 1.5 * edge
+        ui.ctx.fillRect(x, y, ui.squ, ui.squ)
+
+        if (game.valid[pos_coord(i)]) {
+            const mode = game.valid[pos_coord(i)]
+            if (mode === 'move') {}
+            if (mode === 'shoot') {}
+            if (mode === 'series') {}
+        }
+    }
+}
+
+const start_turn = () => {
+    game.player = !game.player
+    const side = game.player ? 'white' : 'black'
+    const on_board = []
+    for (let i = 0; i < game.board.length; ++i)
+        if (game.board[i].includes(side))
+            on_board.push(i)
+    return on_board.map(idx => {
+        const coord = pos_coord(idx)
+
+        const piece = game.board[idx]
+        const name = piece[0].toUpperCase() + piece.slice(1)
+
+        return { coord, name }
+    })
+}
+
+
+const load = () => {
+    size_canvas()
+    new_game()
+    draw_labels()
+    draw_board()
+}
+
+window.addEventListener('load', load)
+window.addEventListener('resize', load)
