@@ -71,6 +71,15 @@ footer {
     border-top: 0.1rem solid gray;
 }
 
+footer select {
+    width: 100%;
+    margin-top: 1.2rem;
+}
+
+footer fieldset { margin-top: 1.2rem }
+
+footer p { margin-bottom: 0 }
+
 #user-turn {
     display: flex;
     justify-content: space-between;
