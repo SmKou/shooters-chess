@@ -213,7 +213,7 @@ const get_pieces = (side) => {
 
 const select_piece = (coord) => {
     const idx = pos_idx(coord)
-    const piece = game.board[idx]
+    const piece = game.board[idx].split('-')
     console.log(idx, piece)
 }
 
@@ -248,7 +248,6 @@ const load = () => {
 
 document.getElementById('user-pieces').addEventListener('change', e => {
     const coord = e.target.value
-    console.log(coord)
     select_piece(coord)
 })
 
