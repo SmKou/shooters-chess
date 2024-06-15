@@ -44,7 +44,7 @@ const size_canvas = () => {
 }
 
 const game = {
-    players: [false, true],    // true: person
+    players: [true, true],    // true: person
     player: false,              // true: white
     valid: {},
     current_piece: '',
@@ -185,6 +185,12 @@ const start_turn = () => {
     document.getElementById('unload-to').innerHTML = ''
     document.getElementById('shoot-at').innerHTML = ''
 
+    game.move_to = ''
+    game.unbridge = false
+    game.bridge_with = ''
+    game.unload_to = ''
+    game.shoot_at = ''
+
     const pieces_list = get_pieces(side)
     load_select(document.getElementById('user-pieces'), pieces_list)
     if (game.players[Number(game.player)])
@@ -206,14 +212,19 @@ const get_pieces = (side) => {
 }
 
 const select_piece = (coord) => {
-    console.log(coord)
+    const idx = pos_idx(coord)
+    const piece = game.board[idx]
+    console.log(idx, piece)
 }
 
 const declare_maneuver = () => {}
 
-const run_decision = (list) => {
-    console.log('my turn')
-}
+// Algorithms:
+// Ranking
+// Bridging
+// Offensive
+// Defensive
+const run_decision = (list) => {}
 
 const load_select = (select_elm, list) => {
     select_elm.innerHTML = ''
@@ -224,7 +235,6 @@ const load_select = (select_elm, list) => {
         select_elm.append(option)
     })
 }
-
 
 const load = () => {
     size_canvas()
@@ -238,6 +248,7 @@ const load = () => {
 
 document.getElementById('user-pieces').addEventListener('change', e => {
     const coord = e.target.value
+    console.log(coord)
     select_piece(coord)
 })
 
