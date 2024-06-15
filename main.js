@@ -87,14 +87,14 @@ const new_game = () => {
                 king: { rank: 3, bridge: '', captured: false }
             },
             pawn: [
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false }
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 },
+                { rank: 1, bridge: '', captured: false, dir: 1 }
             ]
         },
         black: {
@@ -113,14 +113,14 @@ const new_game = () => {
                 king: { rank: 3, bridge: '', captured: false }
             },
             pawn: [
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false },
-                { rank: 1, bridge: '', captured: false }
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 },
+                { rank: 1, bridge: '', captured: false, dir: -1 }
             ]
         }
     }
