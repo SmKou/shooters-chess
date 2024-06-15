@@ -215,8 +215,7 @@ const start_turn = () => {
 
 /*
  * 2. get_pieces(side)
- * List of side-pieces
- * Map list: object { name: <select_text>, value: <coordinate> }
+ * List of side-pieces >> { name: <select_text>, value: <coordinate> }
  * - <select_text>: <coordinate> <Piece>
  */
 const get_pieces = (side) => {
@@ -224,24 +223,22 @@ const get_pieces = (side) => {
     for (let i = 0; i < game.board.length; ++i) {
         const piece = game.board[i].split('-')
 
-        let piece_copy - [...piece]
+        let piece_copy = [...piece]
         let piece_data = game.pieces
         while (piece_copy.length)
             piece_data[piece_copy.shift()]
 
-        if (piece[0] === side && !piece_data.captured)
-            on_board.push(i)
+        if ((piece[0] === side && piece_data.captured) || (piece[0] !== side && !piece_data.captured))
+            continue;
 
-        if (piece[0] !== side && piece_data.captured)
-            on_board.push(i)
+        const coord = pos_coord(i)
+
+        on_board.push({
+            name: coord + ' ' + piece[1][0].toUpperCase() + piece[1].slice(1),
+            value: coord
+        })
     }
-    const list = on_board.map(idx => {
-        const coord = pos_coord(idx)
-        const piece = game.board[idx].split('-')
-        const name = coord + ' ' + piece[1][0].toUpperCase() + piece[1].slice(1)
-        return { value: coord, name }
-    })
-    return list
+    return on_board
 }
 
 /*
@@ -259,6 +256,7 @@ const get_pieces = (side) => {
  */
 
 const pawn = (idx) => {
+    const move_first = []
 
 }
 
