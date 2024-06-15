@@ -44,9 +44,15 @@ const size_canvas = () => {
 }
 
 const game = {
+    players: [true, true],    // true: person
     player: false,              // true: white
-    players: [false, false],    // true: person
-    valid: {}
+    valid: {},
+    current_piece: '',
+    move_to: '',
+    unbridge: false,
+    bridge_with: '',
+    unload_to: '',
+    shoot_at: ''
 }
 
 const new_game = () => {
@@ -169,33 +175,39 @@ const draw_board = () => {
     }
 }
 
-/*
- * Change player
- * - Update game.player
- * - Update #user-turn
- * Clear inputs
-*/
 const start_turn = () => {
     game.player = !game.player
     const side = game.player ? 'white' : 'black'
     document.getElementById('user').innerHTML = side[0].toUpperCase() + side.slice(1)
 
+    document.getElementById('move-to').innerHTML = ''
+    document.getElementById('bridge-with').innerHTML = ''
+    document.getElementById('unload-to').innerHTML = ''
+    document.getElementById('shoot-at').innerHTML = ''
+
+    if (game.players[Number(game.player)])
+        load_select(document.getElementById('user-pieces'), get_pieces(side))
+}
+
+const get_pieces = (side) => {
     const on_board = []
     for (let i = 0; i < game.board.length; ++i)
         if (game.board[i].includes(side))
             on_board.push(i)
+    console.log(on_board)
     const list = on_board.map(idx => {
         const coord = pos_coord(idx)
         const piece = game.board[idx]
         const name = coord + ' ' + piece[0].toUpperCase() + piece.slice(1)
         return { value: coord, name }
     })
-    load_select(document.getElementById('user-pieces'), list)
+    console.log(list)
+    return list
 }
 
 const select_piece = () => {}
 
-
+const declare_maneuver = () => {}
 
 const load_select = (select_elm, list) => {
     select_elm.innerHTML = ''
@@ -213,10 +225,15 @@ const load = () => {
     new_game()
     draw_labels()
     draw_board()
+
+    start_turn()
 }
 
-document.getElementById('init-btn').addEventListener('pointerdown', start_turn)
-document.getElementById('user-pieces').addEventListener('')
+
+document.getElementById('user-pieces').addEventListener('change', e => {
+    const coord = e.target.value
+
+})
 
 window.addEventListener('load', load)
 window.addEventListener('resize', load)
