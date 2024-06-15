@@ -58,7 +58,7 @@ const game = {
 const new_game = () => {
     game.board = [
         // first row fr. bottom
-        'white-rook-queen', 'white-knight-queen', 'white-bishop-queen', 'white-king', 'white-queen', 'white-bishop-king', 'white-knight-king', 'white-rook-king',
+        'white-rook-queen', 'white-knight-queen', 'white-bishop-queen', 'white-queen', 'white-king',  'white-bishop-king', 'white-knight-king', 'white-rook-king',
         // second row
         'white-pawn-0', 'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7',
         // third row
@@ -71,7 +71,7 @@ const new_game = () => {
         '', '', '', '', '', '', '', '',
         // seventh row
         'black-pawn-0', 'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7',
-        'black-rook-queen', 'black-knight-queen', 'black-bishop-queen', 'black-king', 'black-queen', 'black-bishop-king', 'black-knight-king', 'black-rook-king'
+        'black-rook-queen', 'black-knight-queen', 'black-bishop-queen', 'black-queen', 'black-king', 'black-bishop-king', 'black-knight-king', 'black-rook-king'
     ]
 
     // queen = left side, king = right side
@@ -138,7 +138,7 @@ const pos_coord = (idx) => {
     return `${x}${y}`
 }
 
-const pos_idx = (coord) => alpha[coord[0]] + 8 * Number(coord[1])
+const pos_idx = (coord) => alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
 
 const draw_labels = () => {
     ui.ctx.fillStyle = colors.label
