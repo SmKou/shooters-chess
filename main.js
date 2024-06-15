@@ -178,6 +178,19 @@ const draw_board = () => {
  * List of player's pieces >> list: side |> get_pieces
  * - if player: list |> load_select(#user-pieces, _)
  * - else: compute(list)
+ *
+ * Computer sequenece:
+ * 1. start_turn
+ * 2. compute
+ * 3. run_decision
+ * 4. declare_maneuver
+ *
+ * Player sequence:
+ * 1. start_turn
+ * 2. 'change' on #user-pieces: select_piece
+ *    >> input maneuver
+ * 3. 'click' on #submit-btn: declare_maneuver
+ *    'click' on #skip-btn: start_turn
  */
 
 const start_turn = () => {
