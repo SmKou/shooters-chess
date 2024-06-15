@@ -194,14 +194,13 @@ const get_pieces = (side) => {
     for (let i = 0; i < game.board.length; ++i)
         if (game.board[i].includes(side))
             on_board.push(i)
-    console.log(on_board)
     const list = on_board.map(idx => {
         const coord = pos_coord(idx)
-        const piece = game.board[idx]
-        const name = coord + ' ' + piece[0].toUpperCase() + piece.slice(1)
+        const piece = game.board[idx].split('-')
+        const name = coord + ' ' + piece[1][0].toUpperCase() + piece[1].slice(1)
+        console.log(name)
         return { value: coord, name }
     })
-    console.log(list)
     return list
 }
 
@@ -214,7 +213,7 @@ const load_select = (select_elm, list) => {
     list.forEach(itm => {
         const option = document.createElement('option')
         option.value = itm.value
-        option.append(document.createTextNode(option.name))
+        option.append(document.createTextNode(itm.name))
         select_elm.append(option)
     })
 }
