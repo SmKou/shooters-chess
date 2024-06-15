@@ -45,7 +45,7 @@ const size_canvas = () => {
 
 const game = {
     // true: person
-    players: [true, false],
+    players: [true, true],
     // true: white = players[1]
     player: false
 }
@@ -190,6 +190,7 @@ const draw_board = () => {
  * 2. 'change' on #user-pieces: select_piece
  *    >> input maneuver
  * 3. 'click' on #submit-btn: declare_maneuver
+ *    or
  *    'click' on #skip-btn: start_turn
  */
 
@@ -265,22 +266,31 @@ const select_piece = (coord) => {
         return { error: 'Invalid position' }
     const piece = game.board[idx].split('-')
 
+    let maneuvers = {}
     switch (piece[1]) {
         case 'pawn':
-            return pawn(idx)
+            maneuvers = pawn(idx)
+            break
         case 'bishop':
-            return bishop(idx)
+            maneuvers = bishop(idx)
+            break
         case 'knight':
-            return knight(idx)
+            maneuvers = knight(idx)
+            break
         case 'rook':
-            return rook(idx)
+            maneuvers = rook(idx)
+            break
         case 'queen':
-            return queen(idx)
+            maneuvers = queen(idx)
+            break
         case 'king':
-            return king(idx)
+            maneuvers = king(idx)
+            break
         default:
-            return { error: 'Invalid piece' }
+            console.error('Invalid piece')
+            return;
     }
+    console.log(maneuvers)
 }
 
 // Algorithms:
@@ -295,7 +305,6 @@ const run_decision = (list, coord_list = list.map(itm => itm.value)) => {
             return;
         return valid
     })
-    console.log(maneuvers)
 }
 
 /*
