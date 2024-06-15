@@ -221,9 +221,20 @@ const start_turn = () => {
  */
 const get_pieces = (side) => {
     const on_board = []
-    for (let i = 0; i < game.board.length; ++i)
-        if (game.board[i].includes(side))
+    for (let i = 0; i < game.board.length; ++i) {
+        const piece = game.board[i].split('-')
+
+        let piece_copy - [...piece]
+        let piece_data = game.pieces
+        while (piece_copy.length)
+            piece_data[piece_copy.shift()]
+
+        if (piece[0] === side && !piece_data.captured)
             on_board.push(i)
+
+        if (piece[0] !== side && piece_data.captured)
+            on_board.push(i)
+    }
     const list = on_board.map(idx => {
         const coord = pos_coord(idx)
         const piece = game.board[idx].split('-')
