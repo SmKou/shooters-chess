@@ -256,8 +256,10 @@ const get_pieces = (side) => {
  */
 
 const pawn = (idx) => {
-    const move_first = []
-
+    let path = game.board[idx].split('-')
+    let piece = game.pieces
+    while (path.length)
+        piece = piece[path.shift()]
 }
 
 const bishop = (idx) => {}
