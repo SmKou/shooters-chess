@@ -151,6 +151,7 @@ const draw_labels = () => {
     }
 }
 
+// How do the valid maneuvers get drawn on the board?
 const draw_board = () => {
     let is_dark_squ = false
     for (let i = 0; i < max_squ ** 2; ++i) {
@@ -161,12 +162,12 @@ const draw_board = () => {
         const y = (8 - Math.floor(i / max_squ)) * ui.squ - 1.5 * edge
         ui.ctx.fillRect(x, y, ui.squ, ui.squ)
 
-        if (game.valid[pos_coord(i)]) {
-            const mode = game.valid[pos_coord(i)]
-            if (mode === 'move') {}
-            if (mode === 'shoot') {}
-            if (mode === 'series') {}
-        }
+        // if (game.valid[pos_coord(i)]) {
+        //     const mode = game.valid[pos_coord(i)]
+        //     if (mode === 'move') {}
+        //     if (mode === 'shoot') {}
+        //     if (mode === 'series') {}
+        // }
     }
 }
 
