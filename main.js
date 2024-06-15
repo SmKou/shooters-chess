@@ -44,9 +44,11 @@ const size_canvas = () => {
 }
 
 const game = {
-    player: false, // true: white
+    player: false,              // true: white
+    players: [false, false],    // true: person
     valid: {}
 }
+
 const new_game = () => {
     game.board = [
         // first row fr. bottom
@@ -167,20 +169,41 @@ const draw_board = () => {
     }
 }
 
+/*
+ * Change player
+ * - Update game.player
+ * - Update #user-turn
+ * Clear inputs
+*/
 const start_turn = () => {
     game.player = !game.player
     const side = game.player ? 'white' : 'black'
+    document.getElementById('user').innerHTML = side[0].toUpperCase() + side.slice(1)
+
     const on_board = []
     for (let i = 0; i < game.board.length; ++i)
         if (game.board[i].includes(side))
             on_board.push(i)
-    return on_board.map(idx => {
+    const list = on_board.map(idx => {
         const coord = pos_coord(idx)
-
         const piece = game.board[idx]
-        const name = piece[0].toUpperCase() + piece.slice(1)
+        const name = coord + ' ' + piece[0].toUpperCase() + piece.slice(1)
+        return { value: coord, name }
+    })
+    load_select(document.getElementById('user-pieces'), list)
+}
 
-        return { coord, name }
+const select_piece = () => {}
+
+
+
+const load_select = (select_elm, list) => {
+    select_elm.innerHTML = ''
+    list.forEach(itm => {
+        const option = document.createElement('option')
+        option.value = itm.value
+        option.append(document.createTextNode(option.name))
+        select_elm.append(option)
     })
 }
 
@@ -191,6 +214,9 @@ const load = () => {
     draw_labels()
     draw_board()
 }
+
+document.getElementById('init-btn').addEventListener('pointerdown', start_turn)
+document.getElementById('user-pieces').addEventListener('')
 
 window.addEventListener('load', load)
 window.addEventListener('resize', load)
