@@ -44,15 +44,10 @@ const size_canvas = () => {
 }
 
 const game = {
-    players: [true, true],    // true: person
-    player: false,              // true: white
-    valid: {},
-    current_piece: '',
-    move_to: '',
-    unbridge: false,
-    bridge_with: '',
-    unload_to: '',
-    shoot_at: ''
+    // true: person
+    players: [true, false],
+    // true: white = players[1]
+    player: false
 }
 
 const new_game = () => {
@@ -175,6 +170,16 @@ const draw_board = () => {
     }
 }
 
+/*
+ * 1. start_turn
+ * Change current player
+ * Get side >> side
+ * Clear input fields
+ * List of player's pieces >> list: side |> get_pieces
+ * - if player: list |> load_select(#user-pieces, _)
+ * - else: compute(list)
+ */
+
 const start_turn = () => {
     game.player = !game.player
     const side = game.player ? 'white' : 'black'
@@ -185,18 +190,20 @@ const start_turn = () => {
     document.getElementById('unload-to').innerHTML = ''
     document.getElementById('shoot-at').innerHTML = ''
 
-    game.move_to = ''
-    game.unbridge = false
-    game.bridge_with = ''
-    game.unload_to = ''
-    game.shoot_at = ''
-
     const pieces_list = get_pieces(side)
-    load_select(document.getElementById('user-pieces'), pieces_list)
-    if (game.players[Number(game.player)])
-        run_decision(pieces_list)
+    if (game.players[Number(game.player)]) {
+        pieces_list.unshift({ value: '', name: 'Select a piece' })
+        load_select(document.getElementById('user-pieces'), pieces_list)
+    }
+    else computer(pieces_list)
 }
 
+/*
+ * 2. get_pieces(side)
+ * List of side-pieces
+ * Map list: object { name: <select_text>, value: <coordinate> }
+ * - <select_text>: <coordinate> <Piece>
+ */
 const get_pieces = (side) => {
     const on_board = []
     for (let i = 0; i < game.board.length; ++i)
@@ -211,20 +218,86 @@ const get_pieces = (side) => {
     return list
 }
 
-const select_piece = (coord) => {
-    const idx = pos_idx(coord)
-    const piece = game.board[idx].split('-')
-    console.log(idx, piece)
+/*
+ * 3. select_piece(coord)
+ * Convert coordinate to index
+ * Get piece: <side>-<piece_type>-<number|board_side>
+ * Based on piece => get valid maneuvers
+ * - func piece_type(idx) => list<object>[{
+ *        move_to,
+ *        bridge_with,
+ *        unbridge,
+ *        unload_to,
+ *        shoot_at
+ * }, ...]
+ */
+
+const pawn = (idx) => {
+
 }
 
-const declare_maneuver = () => {}
+const bishop = (idx) => {}
+
+const knight = (idx) => {}
+
+const rook = (idx) => {}
+
+const queen = (idx) => {}
+
+const king = (idx) => {}
+
+const select_piece = (coord) => {
+    const idx = pos_idx(coord)
+    if (idx >= game.board.length)
+        return { error: 'Invalid position' }
+    const piece = game.board[idx].split('-')
+
+    switch (piece[1]) {
+        case 'pawn':
+            return pawn(idx)
+        case 'bishop':
+            return bishop(idx)
+        case 'knight':
+            return knight(idx)
+        case 'rook':
+            return rook(idx)
+        case 'queen':
+            return queen(idx)
+        case 'king':
+            return king(idx)
+        default:
+            return { error: 'Invalid piece' }
+    }
+}
 
 // Algorithms:
 // Ranking
 // Bridging
 // Offensive
 // Defensive
-const run_decision = (list) => {}
+const run_decision = (list, coord_list = list.map(itm => itm.value)) => {
+    const maneuvers = coord_list.map(coord => {
+        const valid = select_piece(coord)
+        if (valid.error)
+            return;
+        return valid
+    })
+    console.log(maneuvers)
+}
+
+/*
+ * 4. declare_maneuver(maneuver)
+ */
+
+// maneuver
+// Object{ value: coord, move_to, bridge_with, unbridge, unload_to, shoot_at }
+const declare_maneuver = (maneuver) => {}
+
+// list |> run_decision |> declare_maneuver
+const compute = (list) => {
+    const maneuver = run_decision(list)
+    declare_maneuver(maneuver)
+}
 
 const load_select = (select_elm, list) => {
     select_elm.innerHTML = ''
