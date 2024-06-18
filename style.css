@@ -76,9 +76,17 @@ footer select {
     margin-top: 1.2rem;
 }
 
-footer fieldset { margin-top: 1.2rem }
+footer div {
+    width: 100%;
+    margin-top: 1.2rem;
+    display: flex;
+    justify-content: center;
+}
 
-footer p { margin-bottom: 0 }
+footer div button {
+    margin-left: 1.2rem;
+    margin-right: 1.2rem;
+}
 
 #user-turn {
     display: flex;

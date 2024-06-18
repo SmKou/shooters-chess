@@ -200,10 +200,7 @@ const start_turn = () => {
     const side = game.player ? 'white' : 'black'
     document.getElementById('user').innerHTML = side[0].toUpperCase() + side.slice(1)
 
-    document.getElementById('move-to').innerHTML = ''
-    document.getElementById('bridge-with').innerHTML = ''
-    document.getElementById('unload-to').innerHTML = ''
-    document.getElementById('shoot-at').innerHTML = ''
+    document.getElementById('user-maneuvers').innerHTML = ''
 
     const pieces_list = get_pieces(side)
     if (game.players[Number(game.player)]) {
