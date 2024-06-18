@@ -340,6 +340,19 @@ const load_select = (select_elm, list) => {
     })
 }
 
+const load_game_info = () => {
+    const elms = Array.from(document.querySelectorAll('#info div'))
+    const list = elms.map(elm => {
+        const classnames = elm.className.split(' ')
+        const name = classnames.length > 2 ? classnames[1][0].toUpperCase() + classnames[1].slice(1) : classnames[0][0].toUpperCase() + classnames[0].slice(1)
+        const value = classnames[0]
+        return { name, value }
+    })
+    list.unshift({ name: 'View more info', value: '' })
+    load_select(document.getElementById('game-info'), list)
+}
+load_game_info()
+
 const load = () => {
     size_canvas()
     new_game()
@@ -349,6 +362,23 @@ const load = () => {
     start_turn()
 }
 
+document.getElementById('game-info').addEventListener('change', e => {
+    const value = e.target.value
+    const info = document.getElementById('info')
+    if (!value) {
+        if (!info.classList.contains('inactive'))
+            info.classList.toggle('inactive')
+        return;
+    }
+
+    if (info.classList.contains('inactive'))
+        info.classList.toggle('inactive')
+    const active = document.querySelector('#info div:not(.inactive)')
+    if (active)
+        active.classList.toggle('inactive')
+    const classname = document.querySelector('.' + value).className.split(' ')[0]
+    document.querySelector('#info div.' + classname).classList.toggle('inactive')
+})
 
 document.getElementById('user-pieces').addEventListener('change', e => {
     const coord = e.target.value

@@ -31,8 +31,9 @@
     </header>
     <main>
         <section id="info" class="inactive">
-            <div class="terms">
+            <div class="terms Terminology inactive">
                 <h3>Terminology</h3>
+                <p><strong>Maneuvers</strong></p>
                 <dl>
                     <dt>Maneuver</dt>
                     <dd>The actions of a player's turn consisting of a movement and a shot.</dd>
@@ -50,7 +51,9 @@
                         <li>1...8</li>
                         <li>Max: number of (open) squares to edge of board in one direction</li>
                     </dd></ul>
-
+                </dl>
+                <p><strong>Movements</strong></p>
+                <dl>
                     <dt>Move / Movement</dt>
                     <dd>Change the position of a chosen piece, or un/bridge two pieces.</dd>
 
@@ -59,7 +62,9 @@
 
                     <dt>Movement Range</dt>
                     <dd>The number of squares a piece can traverse for its movement.</dd>
-
+                </dl>
+                <p><strong>Shots</strong></p>
+                <dl>
                     <dt>Shot</dt>
                     <dd>Shoot at a piece in a given position, in series, or unload to another piece.</dd>
 
@@ -78,8 +83,10 @@
 
                     <dt>Series Range</dt>
                     <dd>Number of targets that can be shot at, and potentially shot down, along a path of movement when shooting in series. </dd>
-                    <dd>Each time a piece's rank is lowered, its series range is reduced by one. Even if its rank rises, its series range does not change.</dd>
-
+<!--                     <dd>Each time a piece's rank is lowered, its series range is reduced by one. Even if its rank rises, its series range does not change.</dd> -->
+                </dl>
+                <p><strong>Ranks</strong></p>
+                <dl>
                     <dt>Rank</dt>
                     <dd>The damage a piece can deal when shooting. This can be increased by unloading an adjacent piece, swapped by bridging two pieces, or decreased when shot by a piece of a lower rank.</dd>
 
@@ -105,16 +112,16 @@
                     <dd>Number of squares a bridged piece can orbit around the piece it's bridged with.</dd>
                 </dl>
             </div>
-            <div class="rules">
+            <div class="rules inactive">
                 <h3>Rules</h3>
                 <dl>
 
-                    <dt>Player Turn ("Move")</dt>
+                    <dt>Player Turn</dt>
                     <dd>Per turn, a player declares a maneuver, consisting of only one movement and one shot. Shooting in series is considered shooting once.</dd>
                     <dd><ul>
                         <li>Sequential: Either shoot or move first, then move or shoot.</li>
                         <li>Serial: Shoot at pieces along path of movement.</li>
-                        <li>Replacement: Shoot, then move to shot down piece's position. Can move only as far as piece can move towards shot down piece's position.</li>
+                        <li>Replacement: Shoot, then move to shot down piece's position. Can move only as far as piece can move towards shot down piece's position. Note that due to "Right of Way", this maneuver is only doable by some pieces.</li>
                     </ul></dd>
 
                     <dt>Free-for-All</dt>
@@ -137,16 +144,16 @@
                     </ul></dd>
                 </dl>
             </div>
-            <div class="pawn">
+            <div class="pawn inactive">
                 <h3>Pawn</h3>
                 <p><strong>Rank</strong>: 1</p>
                 <p><strong>Movement</strong><br>Orientation: forward<br>Range: 1</p>
                 <p>Bridge Range: 1</p>
                 <p><strong>Shot</strong><br>Orientation: forward-left, forward-right<br>Range: 1</p>
                 <p>Series Range: 1</p>
-                <p><strong>Switch</strong>: Pawns can replace a shot down target as their shoot in series.<br><strong>Patrol</strong>Each time a pawn reaches the end of the board, its forward direction is reversed.</p>
+                <p><strong>Switch</strong>: Pawns can replace a shot down target as their shoot in series.<br><strong>Patrol</strong>: Each time a pawn reaches the end of the board, its forward direction is reversed.</p>
             </div>
-            <div class="bishop">
+            <div class="bishop inactive">
                 <h3>Bishop</h3>
                 <p><strong>Rank</strong>: 3</p>
                 <p><strong>Movement</strong><br>Orientation: diagonal<br>Range: max</p>
@@ -154,7 +161,7 @@
                 <p><strong>Shot</strong><br>Orientation: right angles<br>Range: 1</p>
                 <p>Series Range: 1</p>
             </div>
-            <div class="knight">
+            <div class="knight inactive">
                 <h3>Knight</h3>
                 <p><strong>Rank</strong>: 3</p>
                 <p><strong>Movement</strong><br>Orientation: L-shape at right angles<br>Range: 3</p>
@@ -163,7 +170,7 @@
                 <p>Series Range: 2</p>
                 <p><strong>Flank</strong>: The L-shape movement of knights consists of two squares in one direction at right angles from its initial position, then one square perpendicular to the chosen direction. Knights cannot move more or less than three squares for their movement.</p>
             </div>
-            <div class="rook">
+            <div class="rook inactive">
                 <h3>Rook</h3>
                 <p><strong>Rank</strong>: 5</p>
                 <p><strong>Movement</strong><br>Orientation: right angles<br>Range: max</p>
@@ -171,7 +178,7 @@
                 <p><strong>Shot</strong><br>Orientation: right angles<br>Range: 4</p>
                 <p>Series Range: 3</p>
             </div>
-            <div class="queen">
+            <div class="queen inactive">
                 <h3>Queen</h3>
                 <p><strong>Rank</strong>: 9</p>
                 <p><strong>Movement</strong><br>Orientation: any<br>Range: max</p>
@@ -179,7 +186,7 @@
                 <p><strong>Shot</strong><br>Orientation: any<br>Range: 1</p>
                 <p>Series Range: 4</p>
             </div>
-            <div class="king">
+            <div class="king inactive">
                 <h3>King</h3>
                 <p><strong>Rank</strong>: 9</p>
                 <p><strong>Movement</strong><br>Orientation: any<br>Range: 1</p>
