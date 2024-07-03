@@ -43,6 +43,11 @@ const start_turn = () => {
     else computer(pieces_list)
 }
 
+const clear = (side) => {
+    document.getElementById('user').innerHTML = side[0].toUpperCase() + side.slice(1)
+    document.getElementById
+}
+
 /*
  * 2. get_pieces(side)
  * List of side-pieces >> { name: <select_text>, value: <coordinate> }
