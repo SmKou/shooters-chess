@@ -1,8 +1,93 @@
-import help from '/helpers'
-import props from '/settings'
-import game from '/game'
-import render from '/render'
 import './style.css'
+
+const a_code = 65
+const max_squ = 8
+const edge = 36
+const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
+
+const options = {
+    graphics: [],
+    colors: [],
+    input_modes: []
+}
+
+const settings = {
+    graphics: 0,
+    anims: false,
+    colors: 0,
+    players: [true, true],  // true: person
+    input_modes: 0
+}
+
+/* ----------------------------------------------------------------- RENDER */
+
+const size = (cvs) => {
+    cvs.width = cvs.clientWidth
+    cvs.height = cvs.clientHeight
+
+    const ctx = cvs.getContext('2d')
+    ctx.font = '28px sans-serif'
+    ctx.textAlign = 'center'
+
+    const squ = (cvs.width - 2 * edge) / 8
+    const offset = squ / 2
+    const area = squ / 8
+    const unit = area / 2
+
+    return { ctx, squ, offset, area, unit }
+}
+
+const labels = (ui) => {
+    ui.ctx.fillStyle = options.colors[settings.colors].label
+    for (let i = 0; i < max_squ; ++i) {
+        ui.ctx.fillText(
+            (8 - i) + "",
+            edge / 2 + edge / 8,
+            edge + i * ui.squ + ui.offset
+        )
+        ui.ctx.fillText(
+            String.fromCharCode(a_code + i),
+            edge + i * ui.squ + ui.offset + edge / 4,
+            cvs.height - edge / 4
+        )
+    }
+}
+
+// How do the valid maneuvers get drawn on the board?
+const board = (ui) => {
+    const palette = options.colors[settings.colors]
+    let is_dark_squ = false
+    for (let i = 0; i < max_squ ** 2; ++i) {
+        if (i % 8 !== 0)
+            is_dark_squ = !is_dark_squ
+        ui.ctx.fillStyle = is_dark_squ ? palette.dark_squ : palette.light_squ
+
+        const x = (i % max_squ + 1) * ui.squ - edge
+        const y = (8 - Math.floor(i / max_squ)) * ui.squ - 1.5 * edge
+        ui.ctx.fillRect(x, y, ui.squ, ui.squ)
+    }
+}
+
+const clear_input = () => {
+
+}
+
+/* ----------------------------------------------------------------- HELPERS */
+
+const pos_coord = (idx) => {
+    if (!idx || idx < 0)
+        return ''
+    const idx_fr_vals = Object.values(alpha).indexOf(idx % max_squ)
+    const x = Object.keys(alpha)[idx_fr_vals]
+    const y = Math.floor(idx / max_squ) + 1
+    return `${x}${y}`
+}
+
+const pos_idx = (coord) => {
+    if (!coord)
+        return -1
+    return alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
+}
 
 /*
  * 1. start_turn
