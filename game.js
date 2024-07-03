@@ -1,4 +1,4 @@
-const new_game = () => {
+const setup = () => {
 
     const board = [
         // first row fr. bottom
@@ -82,5 +82,5 @@ const new_game = () => {
 }
 
 export default {
-    new_game
+    setup
 }
