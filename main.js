@@ -1,133 +1,33 @@
+import help from '/helpers'
+import game from '/game'
+import render from '/render'
 import './style.css'
 
-const a_code = 65
-const max_squ = 8
-const edge = 36
-const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
-const colors = {
-    background: '#E9D7BC',
-    label: '#455C52',
-    light_squ: '#CDAA7D',
-    dark_squ: '#385546'
-}
-
-const cvs = document.getElementById('game')
-
-const size_canvas = () => {
-    cvs.width = cvs.clientWidth
-    cvs.height = cvs.clientHeight
-
-    const ctx = cvs.getContext('2d')
-    ctx.font = '28px sans-serif'
-    ctx.textAlign = 'center'
-
-    const squ = (cvs.width - 2 * edge) / 8
-    const offset = squ / 2
-    const area = squ / 8
-    const unit = area / 2
-
-    return { ctx, squ, offset, area, unit }
-}
-
-const game = {
-    players: [true, true],      // true: person
-    player: false               // true: white = players[1]
-}
-
-const ui = size_canvas()
-
-const new_game = () => {
-    game.board = [
-        // first row fr. bottom
-        'white-rook-queen', 'white-knight-queen', 'white-bishop-queen', 'white-queen', 'white-king',  'white-bishop-king', 'white-knight-king', 'white-rook-king',
-        // second row
-        'white-pawn-0', 'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7',
-        // third row
-        '', '', '', '', '', '', '', '',
-        // fourth row
-        '', '', '', '', '', '', '', '',
-        // fifth row
-        '', '', '', '', '', '', '', '',
-        // sixth row
-        '', '', '', '', '', '', '', '',
-        // seventh row
-        'black-pawn-0', 'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7',
-        'black-rook-queen', 'black-knight-queen', 'black-bishop-queen', 'black-queen', 'black-king', 'black-bishop-king', 'black-knight-king', 'black-rook-king'
-    ]
-
-    // queen = left side, king = right side
-    game.pieces = {
-        white: {
-            king: { rank: 9, bridge: -1, captured: false },
-            queen: { rank: 9, captured: false },
-            rook: {
-                queen: { rank: 5, bridge: -1, captured: false },
-                king: { rank: 5, bridge: -1, captured: false }
-            },
-            knight: {
-                queen: { rank: 3, bridge: -1, captured: false },
-                king: { rank: 3, bridge: -1, captured: false }
-            },
-            bishop: {
-                queen: { rank: 3, bridge: -1, captured: false },
-                king: { rank: 3, bridge: -1, captured: false }
-            },
-            pawn: [
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 },
-                { rank: 1, bridge: -1, captured: false, dir: 1 }
-            ]
-        },
-        black: {
-            king: { rank: 9, bridge: -1, captured: false },
-            queen: { rank: 9, captured: false },
-            rook: {
-                queen: { rank: 5, bridge: -1, captured: false },
-                king: { rank: 5, bridge: -1, captured: false }
-            },
-            knight: {
-                queen: { rank: 3, bridge: -1, captured: false },
-                king: { rank: 3, bridge: -1, captured: false }
-            },
-            bishop: {
-                queen: { rank: 3, bridge: -1, captured: false },
-                king: { rank: 3, bridge: -1, captured: false }
-            },
-            pawn: [
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 },
-                { rank: 1, bridge: -1, captured: false, dir: -1 }
-            ]
-        }
+const graphics = []
+const colors = [
+    {
+        background: '#E9D7BC',
+        label: '#455C52',
+        light_squ: '#CDAA7D',
+        dark_squ: '#385546'
     }
+]
+const input_modes = []
+
+const game_settings = {
+    graphics: 0,
+    anims: false,
+    colors: 0,
+    players: [true, true],  // true: person
+    input_mode: 0
 }
 
-const pos_coord = (idx) => {
-    if (idx < 0)
-        return ''
-    const idx_fr_vals = Object.values(alpha).indexOf(idx % max_squ)
-    const x = Object.keys(alpha)[idx_fr_vals]
-    const y = Math.floor(idx / max_squ) + 1
-    return `${x}${y}`
-}
 
-const pos_idx = (coord) => {
-    if (!coord)
-        return -1
-    return alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
-}
+const ui = render.size_canvas(document.getElementById('game'))
 
-const draw_labels = () => {
+
+
+const draw_labels = (ui, colors) => {
     ui.ctx.fillStyle = colors.label
     for (let i = 0; i < max_squ; ++i) {
         ui.ctx.fillText(
