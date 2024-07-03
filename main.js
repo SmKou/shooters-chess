@@ -3,16 +3,7 @@ import './style.css'
 const a_code = 65
 const max_squ = 8
 const edge = 36
-const alpha = {
-    A: 0,
-    B: 1,
-    C: 2,
-    D: 3,
-    E: 4,
-    F: 5,
-    G: 6,
-    H: 7
-}
+const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
 const colors = {
     background: '#E9D7BC',
     label: '#455C52',
@@ -21,34 +12,29 @@ const colors = {
 }
 
 const cvs = document.getElementById('game')
-const ui = {
-    ctx: '',
-    squ: 0,
-    offset: 0,
-    area: 0,
-    unit: 0
-}
 
 const size_canvas = () => {
     cvs.width = cvs.clientWidth
     cvs.height = cvs.clientHeight
-    ui.ctx = cvs.getContext('2d')
-    ui.ctx.font = '28px sans-serif'
-    ui.ctx.textAlign = 'center'
 
-    ui.squ = (cvs.width - 2 * edge) / 8
-    ui.offset = ui.squ / 2
+    const ctx = cvs.getContext('2d')
+    ctx.font = '28px sans-serif'
+    ctx.textAlign = 'center'
 
-    ui.area = ui.squ / 8
-    ui.unit = ui.area / 2
+    const squ = (cvs.width - 2 * edge) / 8
+    const offset = squ / 2
+    const area = squ / 8
+    const unit = area / 2
+
+    return { ctx, squ, offset, area, unit }
 }
 
 const game = {
-    // true: person
-    players: [true, true],
-    // true: white = players[1]
-    player: false
+    players: [true, true],      // true: person
+    player: false               // true: white = players[1]
 }
+
+const ui = size_canvas()
 
 const new_game = () => {
     game.board = [
