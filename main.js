@@ -72,68 +72,74 @@ const new_game = () => {
     // queen = left side, king = right side
     game.pieces = {
         white: {
-            king: { rank: 9, bridge: '', captured: false },
+            king: { rank: 9, bridge: -1, captured: false },
             queen: { rank: 9, captured: false },
             rook: {
-                queen: { rank: 5, bridge: '', captured: false },
-                king: { rank: 5, bridge: '', captured: false }
+                queen: { rank: 5, bridge: -1, captured: false },
+                king: { rank: 5, bridge: -1, captured: false }
             },
             knight: {
-                queen: { rank: 3, bridge: '', captured: false },
-                king: { rank: 3, bridge: '', captured: false }
+                queen: { rank: 3, bridge: -1, captured: false },
+                king: { rank: 3, bridge: -1, captured: false }
             },
             bishop: {
-                queen: { rank: 3, bridge: '', captured: false },
-                king: { rank: 3, bridge: '', captured: false }
+                queen: { rank: 3, bridge: -1, captured: false },
+                king: { rank: 3, bridge: -1, captured: false }
             },
             pawn: [
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 },
-                { rank: 1, bridge: '', captured: false, dir: 1 }
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 },
+                { rank: 1, bridge: -1, captured: false, dir: 1 }
             ]
         },
         black: {
-            king: { rank: 9, bridge: '', captured: false },
+            king: { rank: 9, bridge: -1, captured: false },
             queen: { rank: 9, captured: false },
             rook: {
-                queen: { rank: 5, bridge: '', captured: false },
-                king: { rank: 5, bridge: '', captured: false }
+                queen: { rank: 5, bridge: -1, captured: false },
+                king: { rank: 5, bridge: -1, captured: false }
             },
             knight: {
-                queen: { rank: 3, bridge: '', captured: false },
-                king: { rank: 3, bridge: '', captured: false }
+                queen: { rank: 3, bridge: -1, captured: false },
+                king: { rank: 3, bridge: -1, captured: false }
             },
             bishop: {
-                queen: { rank: 3, bridge: '', captured: false },
-                king: { rank: 3, bridge: '', captured: false }
+                queen: { rank: 3, bridge: -1, captured: false },
+                king: { rank: 3, bridge: -1, captured: false }
             },
             pawn: [
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 },
-                { rank: 1, bridge: '', captured: false, dir: -1 }
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 },
+                { rank: 1, bridge: -1, captured: false, dir: -1 }
             ]
         }
     }
 }
 
 const pos_coord = (idx) => {
+    if (idx < 0)
+        return ''
     const idx_fr_vals = Object.values(alpha).indexOf(idx % max_squ)
     const x = Object.keys(alpha)[idx_fr_vals]
     const y = Math.floor(idx / max_squ) + 1
     return `${x}${y}`
 }
 
-const pos_idx = (coord) => alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
+const pos_idx = (coord) => {
+    if (!coord)
+        return -1
+    return alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
+}
 
 const draw_labels = () => {
     ui.ctx.fillStyle = colors.label
@@ -252,11 +258,77 @@ const get_pieces = (side) => {
  * }, ...]
  */
 
-const pawn = (idx) => {
+const get_piece = (idx) => {
+    if (idx < 0)
+        return false
     let path = game.board[idx].split('-')
     let piece = game.pieces
     while (path.length)
         piece = piece[path.shift()]
+    return piece
+}
+
+const pawn = (idx) => {
+    const piece = get_piece(idx)
+    const bridge_piece = get_piece(piece.bridge)
+
+    const maneuvers = []
+
+    const dir = idx + 8 * piece.dir
+    const dir_left = dir + 1 * piece.dir
+    const dir_right = dir - 1 * piece.dir
+
+    if (!game.board[dir]) {
+        const dir_dir = dir + 8 * piece.dir
+        const dir_dir_left = dir_dir + 1 * piece.dir
+        const dir_dir_right = dir_dir - 1 * piece.dir
+
+        const maneuver = { move_to: dir }
+        maneuvers.push(maneuver)
+
+        if (game.board[dir_dir_left])
+            maneuvers.push({ ...maneuver, shoot_at: dir_dir_left })
+        if (game.board[dir_dir_right])
+            maneuvers.push({ ...maneuver, shoot_at: dir_dir_right })
+    }
+
+    if (game.board[dir_left]) {
+        const maneuver = { shoot_at: dir_left }
+        maneuvers.push(maneuver)
+        maneuvers.push({ ...maneuver, move_to: dir_left })
+    }
+
+    if (game.board[dir_right]) {
+        const maneuver = { shoot_at: dir_right }
+        maneuvers.push(maneuver)
+        maneuvers.push({ ...maneuver, move_to: dir_right })
+    }
+
+    const left = idx + 1 * piece.dir
+    const right = idx - 1 * piece.dir
+    const backward = idx - 8 * piece.dir
+
+    if (piece.bridge >= 0) {
+        const maneuver = { unbridge_with: piece.bridge }
+        maneuvers.push(maneuver)
+
+        if (game.board[dir_left])
+            maneuvers.push({ ...maneuver,  shoot_at: dir_left })
+        if (game.board[dir_right])
+            maneuvers.push({ ...maneuver, shoot_at: dir_right })
+    }
+    else {
+        if (game.board[left])
+            maneuvers.push({ bridge_with: left })
+        if (game.board[right])
+            maneuvers.push({ bridge_with: right })
+        if (game.board[backward])
+            maneuvers.push({ bridge_with: backward })
+        if (game.board[dir])
+            maneuvers.push({ bridge_with: dir })
+    }
+
+    return maneuvers
 }
 
 const bishop = (idx) => {}
