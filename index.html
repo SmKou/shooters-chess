@@ -34,170 +34,7 @@
     </header>
     <main>
         <section id="info" class="inactive">
-            <div class="terms Terminology inactive">
-                <h3>Terminology</h3>
-                <p><strong>Maneuvers</strong></p>
-                <dl>
-                    <dt>Maneuver</dt>
-                    <dd>The actions of a player's turn consisting of a movement and a shot.</dd>
 
-                    <dt>Orientation</dt>
-                    <dd><ul>
-                        <li>Right angles: forward, left, right, back</li>
-                        <li>Diagonals: forward-left, forward-right, back-left, back-right</li>
-                        <li>Any: right angles + diagonals</li>
-                        <li>Orbit: circle around a square</li>
-                    </ul></dd>
-
-                    <dt>Range</dt>
-                    <dd><ul>
-                        <li>1...8</li>
-                        <li>Max: number of (open) squares to edge of board in one direction</li>
-                    </dd></ul>
-                </dl>
-                <p><strong>Movements</strong></p>
-                <dl>
-                    <dt>Move / Movement</dt>
-                    <dd>Change the position of a chosen piece, or un/bridge two pieces.</dd>
-
-                    <dt>Movement Orientation</dt>
-                    <dd>The direction a piece can traverse for its movement.</dd>
-
-                    <dt>Movement Range</dt>
-                    <dd>The number of squares a piece can traverse for its movement.</dd>
-                </dl>
-                <p><strong>Shots</strong></p>
-                <dl>
-                    <dt>Shot</dt>
-                    <dd>Shoot at a piece in a given position, in series, or unload to another piece.</dd>
-
-                    <dt>Shot Orientation</dt>
-                    <dd>The direction a piece can shoot a target by.</dd>
-
-                    <dt>Shot Range</dt>
-                    <dd>Number of squares away a target can be to be shot at, and potentially shot down.</dd>
-
-                    <dt>Path of Movement</dt>
-                    <dd>Squares a piece would traverse from its initial position to the final position of its movement, including the final position.</dd>
-
-                    <dt>Shoot in series</dt>
-                    <dd>Changes shot orientation to match a piece's movement</dd>
-                    <dd>Shoot at a piece, or pieces, along a piece's path of movement. If not all pieces are shot down along this path, the piece can only move to a square before the first piece it would fail to shoot down.</dd>
-
-                    <dt>Series Range</dt>
-                    <dd>Number of targets that can be shot at, and potentially shot down, along a path of movement when shooting in series. </dd>
-<!--                     <dd>Each time a piece's rank is lowered, its series range is reduced by one. Even if its rank rises, its series range does not change.</dd> -->
-                </dl>
-                <p><strong>Ranks</strong></p>
-                <dl>
-                    <dt>Rank</dt>
-                    <dd>The damage a piece can deal when shooting. This can be increased by unloading an adjacent piece, swapped by bridging two pieces, or decreased when shot by a piece of a lower rank.</dd>
-
-                    <dt>Shot Down</dt>
-                    <dd>A piece receives enough damage to lower its rank to zero or less, thereby removing the piece from play.</dd>
-
-                    <dt>Unload</dt>
-                    <dd>A piece adds its rank to an adjacent piece, reducing its own rank to zero and removing it from play. Replaces either shot or movement in a move.</dd>
-
-                    <dt>Bridge</dt>
-                    <dd>A piece joins to an adjacent piece, forcing the two to either move in tandem in one direction or to orbit one another. This counts as the movement of a player's turn.</dd>
-                    <dd>Movement depends on the lower-ranked bridged piece's orientation, unless orbiting. Orbiting uses a bridged piece's bridge range for its movement. Shots depend on the higher-ranked bridge piece's rank and range. However, whichever piece of the two is shooting, as they cannot shoot together, use their shot orientation.</dd>
-                    <dd>When shot by another piece, the rank of the bridged piece being shot is reduced accordingly. If shot down, half of the shot down bridged piece's rank, rounded down, is taken from the rank of the remaining piece.'</dd>
-
-                    <dt>Capture</dt>
-                    <dd>Remove an enemy piece from play without eliminating it by bridging with it. Player can move the enemy piece following bridging rules, but cannot use the enemy piece to shoot. Enemy cannot unbridge a captured piece.</dd>
-                    <dd>A piece that bridges with an enemy of higher rank will become captured by the enemy.</dd>
-
-                    <dt>Unbridge</dt>
-                    <dd>Unjoin two pieces in a bridge. This counts as the movement of a player's turn.</dd>
-
-                    <dt>Bridge Range</dt>
-                    <dd>Number of squares a bridged piece can orbit around the piece it's bridged with.</dd>
-                </dl>
-            </div>
-            <div class="rules inactive">
-                <h3>Rules</h3>
-                <dl>
-
-                    <dt>Player Turn</dt>
-                    <dd>Per turn, a player declares a maneuver, consisting of only one movement and one shot. Shooting in series is considered shooting once.</dd>
-                    <dd><ul>
-                        <li>Sequential: Either shoot or move first, then move or shoot.</li>
-                        <li>Serial: Shoot at pieces along path of movement.</li>
-                        <li>Replacement: Shoot, then move to shot down piece's position. Can move only as far as piece can move towards shot down piece's position. Note that due to "Right of Way", this maneuver is only doable by some pieces.</li>
-                    </ul></dd>
-
-                    <dt>Free-for-All</dt>
-                    <dd>A piece can shoot or move against any other piece. It can also unload or bridge to any adjacent piece.</dd>
-
-                    <dt>Right of Way</dt>
-                    <dd>No piece can defy its ranges, orientations, or rank, unless bridged. Even while bridged, pieces must follow ranges, orientations and rank as specified.</dd>
-                    <dd>Pieces cannot "fly around" or "skip over" other pieces unless their movement allows it, such as the Knight's L-shape movement, the Bishop's diagonal movement used twice, or a bridged piece is orbiting its bridge.</dd>
-
-                    <dt>Last Ruler rules All</dt>
-                    <dd>Either of a player's monarchs can survive the other, keeping a game in play.</dd>
-
-                    <dt>Checkmate</dt>
-                    <dd>State of board is any of the following conditions for the enemy's army.</dd>
-                    <dd><ul>
-                        <li>Remaining enemy monarchs cannot move or shoot without being annihilated.</li>
-                        <li>Remaining enemy monarchs have been captured.</li>
-                        <li>Sum of all remaining enemy pieces cannot shoot down remaining monarchs.</li>
-                        <li>Both enemy monarchs have been shot down.</li>
-                    </ul></dd>
-                </dl>
-            </div>
-            <div class="pawn inactive">
-                <h3>Pawn</h3>
-                <p><strong>Rank</strong>: 1</p>
-                <p><strong>Movement</strong><br>Orientation: forward<br>Range: 1</p>
-                <p>Bridge Range: 1</p>
-                <p><strong>Shot</strong><br>Orientation: forward-left, forward-right<br>Range: 1</p>
-                <p>Series Range: 1</p>
-                <p><strong>Switch</strong>: Pawns can replace a shot down target as their shoot in series.<br><strong>Patrol</strong>: Each time a pawn reaches the end of the board, its forward direction is reversed.</p>
-            </div>
-            <div class="bishop inactive">
-                <h3>Bishop</h3>
-                <p><strong>Rank</strong>: 3</p>
-                <p><strong>Movement</strong><br>Orientation: diagonal<br>Range: max</p>
-                <p>Bridge Range: 1</p>
-                <p><strong>Shot</strong><br>Orientation: right angles<br>Range: 1</p>
-                <p>Series Range: 1</p>
-            </div>
-            <div class="knight inactive">
-                <h3>Knight</h3>
-                <p><strong>Rank</strong>: 3</p>
-                <p><strong>Movement</strong><br>Orientation: L-shape at right angles<br>Range: 3</p>
-                <p>Bridge Range: </p>
-                <p><strong>Shot</strong><br>Orientation: diagonal<br>Range: 1</p>
-                <p>Series Range: 2</p>
-                <p><strong>Flank</strong>: The L-shape movement of knights consists of two squares in one direction at right angles from its initial position, then one square perpendicular to the chosen direction. Knights cannot move more or less than three squares for their movement.</p>
-            </div>
-            <div class="rook inactive">
-                <h3>Rook</h3>
-                <p><strong>Rank</strong>: 5</p>
-                <p><strong>Movement</strong><br>Orientation: right angles<br>Range: max</p>
-                <p>Bridge Range: 2</p>
-                <p><strong>Shot</strong><br>Orientation: right angles<br>Range: 4</p>
-                <p>Series Range: 3</p>
-            </div>
-            <div class="queen inactive">
-                <h3>Queen</h3>
-                <p><strong>Rank</strong>: 9</p>
-                <p><strong>Movement</strong><br>Orientation: any<br>Range: max</p>
-                <p>Bridge Range: 8</p>
-                <p><strong>Shot</strong><br>Orientation: any<br>Range: 1</p>
-                <p>Series Range: 4</p>
-            </div>
-            <div class="king inactive">
-                <h3>King</h3>
-                <p><strong>Rank</strong>: 9</p>
-                <p><strong>Movement</strong><br>Orientation: any<br>Range: 1</p>
-                <p>Bridge Range: 1</p>
-                <p><strong>Shot</strong><br>Orientation: any<br>Range: 1</p>
-                <p>Series Range: 1</p>
-                <p><strong>Bomber</strong>: The king can be sacrificed to wipe out all pieces in a 1-square radius, regardless of rank or side.</p>
-            </div>
         </section>
         <canvas id="game">Browser does not support canvas.</canvas>
     </main>
@@ -206,14 +43,13 @@
             <h3>Player: <span id="user"></span></h3>
             <button id="init-btn">New Game</button>
         </section>
-        <section id="player-maneuver"></section>
         <section id="input">
             <select id="user-pieces"></select>
-            <select id="user-maneuvers"></select>
-            <div>
-                <button id="submit-btn">Declare</button>
-                <button id="skip-btn">Skip</button>
-            </div>
+            <div id="user-maneuver"></div>
+        </section>
+        <section id="submit">
+            <button id="submit-btn">Declare</button>
+            <button id="skip-btn">Skip</button>
         </section>
     </footer>
     <script type="module" src="/main.js"></script>

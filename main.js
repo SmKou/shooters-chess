@@ -5,10 +5,90 @@ const max_squ = 8
 const edge = 36
 const alpha = { A: 0, B: 1, C: 2, D: 3, E: 4, F: 5, G: 6, H: 7 }
 
+const actions = {
+    move: { value: 'move_to' },
+    bridge: {
+        value: 'bridge_with',
+        except: ['unbridge']
+    },
+    unbridge: { value: 'unbridge' },
+    unload: {
+        value: 'unload_to',
+        except: ['move', 'bridge', 'unbridge', 'shoot']
+    },
+    shoot: { value: 'shoot_at' }
+}
+
 const options = {
     graphics: [],
     colors: [],
-    input_modes: []
+    input_modes: [
+        {
+            mode: 'manual',
+            props: (e, piece) => {
+                const sel_1 = document.createElement('select')
+                sel_1.id = 'sel-1'
+                const init_option = document.createElement('option')
+                init_option.value = ''
+                init_option.append(document.createTextNode('Select action'))
+                for (const action of actions) {
+                    if (action === 'unbridge' && !piece.bridged)
+                        continue;
+                    const option = document.createElement('option')
+                    option.value = actions[action].value
+                    option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
+                    sel_1.append(option)
+                }
+                const ipt_1 = document.createElement('input')
+                ipt_1.id = 'ipt-1'
+                ipt_1.pattern = '([A-H][1-8])|([1-8][A-H])'
+                ipt_1.disabled = true
+
+                const sel_2 = document.createElement('select')
+                sel_2.id = 'sel-2'
+                const ipt_2 = document.createElement('input')
+                ipt_2.id = 'ipt-2'
+                ipt_2.pattern = '([A-H][1-8])|([1-8][A-H])'
+                ipt_2.disabled = true
+
+                const listener = (val, n, ipt) => {
+                    const opt = document.querySelector(`#sel-${n} option`)
+                    if (!val) {
+                        if (opt.innerHTML === 'Deselect') {
+                            opt.innerHTML = ''
+                            opt.append(document.createTextNode('Select action'))
+                        }
+                        ipt.disabled = true
+                        return false;
+                    }
+                    return true
+                }
+
+                sel_1.addEventListener('change', (e) => {
+                    sel_2.innerHTML = ''
+                    const res = listener(e.target.value, 1, document.querySelector('#sel-1 option'))
+                    if (!res)
+                        return;
+                    ipt_1.disabled = false
+                    for (const action of actions) {
+                        if ((action === 'unbridge' && !piece.bridged) || value === 'unload')
+                            continue;
+                        const option = document.createElement('option')
+                        option.value = actions[action].value
+                        option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
+                        sel_2.append(option)
+                    }
+                })
+
+                sel_2.addEventListener('change', (e) => {
+                    const res = listener(e.target.value, 2, document.querySelector('#sel-2 option'))
+                    if (!res)
+                        return;
+                    ipt_2.disabled = false
+                })
+            }
+        }
+    ]
 }
 
 const settings = {
@@ -87,6 +167,91 @@ const pos_idx = (coord) => {
     if (!coord)
         return -1
     return alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
+}
+
+/* ----------------------------------------------------------------- GAME */
+
+const setup = () => {
+    const board = [
+        // first row fr. bottom
+        'white-rook-queen', 'white-knight-queen', 'white-bishop-queen', 'white-queen', 'white-king',  'white-bishop-king', 'white-knight-king', 'white-rook-king',
+        // second row
+        'white-pawn-0', 'white-pawn-1', 'white-pawn-2', 'white-pawn-3', 'white-pawn-4', 'white-pawn-5', 'white-pawn-6', 'white-pawn-7',
+        '', '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '', '',
+        '', '', '', '', '', '', '', '',
+        // seventh row fr. bottom
+        'black-pawn-0', 'black-pawn-1', 'black-pawn-2', 'black-pawn-3', 'black-pawn-4', 'black-pawn-5', 'black-pawn-6', 'black-pawn-7',
+        // eighth row
+        'black-rook-queen', 'black-knight-queen', 'black-bishop-queen', 'black-queen', 'black-king', 'black-bishop-king', 'black-knight-king', 'black-rook-king'
+    ]
+    // queen = left side, king = right side
+    const pieces = {
+        white: {
+            king: { rank: 9 },
+            queen: { rank: 9 },
+            rook: {
+                queen: { rank: 5 },
+                king: { rank: 5 }
+            },
+            knight: {
+                queen: { rank: 3 },
+                king: { rank: 3 }
+            },
+            bishop: {
+                queen: { rank: 3 },
+                king: { rank: 3 }
+            },
+            pawn: [
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 },
+                { rank: 1 , dir: 1 }
+            ]
+        },
+        black: {
+            king: { rank: 9 },
+            queen: { rank: 9 },
+            rook: {
+                queen: { rank: 5 },
+                king: { rank: 5 }
+            },
+            knight: {
+                queen: { rank: 3 },
+                king: { rank: 3 }
+            },
+            bishop: {
+                queen: { rank: 3 },
+                king: { rank: 3 }
+            },
+            pawn: [
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 },
+                { rank: 1 , dir: -1 }
+            ]
+        }
+    }
+    // true: white = players[1]
+    return { player: false, board, pieces }
+}
+
+/*
+ * Change player (+side)
+ */
+const start_turn = (game) => {
+    game.player = !game.player
+    const side = game.player ? 'white' : 'black'
+
 }
 
 /*
