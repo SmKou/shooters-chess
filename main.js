@@ -20,104 +20,177 @@ const actions = {
 }
 
 const options = {
-    graphics: [],
-    colors: [],
+    graphics: [
+        'starship',
+        'chess piece',
+        'code'
+    ],
+    colors: [
+        {
+            name: 'star-galactic',
+            palette: {}
+        },
+        {
+            name: 'traditional',
+            palette: {
+                background: '#E9D7BC',
+                label: '#455C52',
+                light_squ: '#CDAA7D',
+                dark_squ: '#385546'
+            }
+        },
+        {
+            name: 'dark',
+            palette: {}
+        },
+        {
+            name: 'light',
+            palette: {}
+        }
+    ],
     input_modes: [
         {
-            mode: 'manual',
-            props: (e, piece) => {
+            mode: 'manual', // input x2
+            props: () => {}
+        },
+        {
+            mode: 'semi-manual', // select + input x2
+            props: () => {}
+        },
+        {
+            mode: 'semi-automatic', // select x2
+            props: () => {
                 const sel_1 = document.createElement('select')
                 sel_1.id = 'sel-1'
-                const init_opt_1 = document.createElement('option')
-                init_opt_1.value = ''
-                init_opt_1.append(document.createTextNode('Select action'))
-                sel_1.append(init_opt_1)
-                for (const action of actions) {
-                    if (action === 'unbridge' && !piece.bridged)
-                        continue;
-                    const option = document.createElement('option')
-                    option.value = actions[action].value
-                    option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
-                    sel_1.append(option)
-                }
-
-                const ipt_1 = document.createElement('input')
-                ipt_1.id = 'ipt-1'
-                ipt_1.pattern = '([A-H][1-8])|([1-8][A-H])'
-                ipt_1.disabled = true
-
                 const sel_2 = document.createElement('select')
                 sel_2.id = 'sel-2'
-                const ipt_2 = document.createElement('input')
-                ipt_2.id = 'ipt-2'
-                ipt_2.pattern = '([A-H][1-8])|([1-8][A-H])'
-                ipt_2.disabled = true
-
-                sel_1.addEventListener('change', (e) => {
-                    const val = e.target.value
-                    const opt = document.querySelector('#sel-1 option')
-                    const opt_text = opt.innerHTML
-                    if (!val) {
-                        opt.innerHTML = ''
-                        if (opt_text.includes('Deselect'))
-                            opt.append(document.createTextNode('Select action'))
-                        else
-                            opt.append(document.createTextNode('Deselect action'))
-
-                        ipt_1.disabled = true
-                        sel_2.innerHTML = ''
-                        ipt_2.value = ''
-                        ipt_2.disabled = true
-                        return;
-                    }
-
-                    ipt_1.disabled = false
-                    sel_2.innerHTML = ''
-                    ipt_2.value = ''
-                    ipt_2.disabled = true
-
-                    if (val === 'unload')
-                        return;
-
-                    const init_opt_2 = document.createElement('option')
-                    init_opt_2.value = ''
-                    init_opt_2.append(document.createTextNode('Select second action'))
-                    sel_2.append(init_opt_2)
-                    for (const action of actions) {
-                        if (actions[action].value === val
-                        || (action === 'unbridge' && !piece.bridged))
-                            continue;
-                        const option = document.createElement('option')
-                        option.value = actions[action].value
-                        option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
-                        sel_2.append(option)
-                    }
-                })
-
-                sel_2.addEventListener('change', (e) => {
-                    const val = e.target.value
-                    const opt = document.querySelector('#sel-1 option')
-                    const opt_text = opt.innerHTML
-                    if (!val) {
-                        opt.innerHTML = ''
-                        if (opt_text.includes('Deselect'))
-                            opt.append(document.createTextNode('Select second action'))
-                        else
-                            opt.append(document.createTextNode('Deselect action'))
-                        ipt_2.disabled = true
-                        return;
-                    }
-                    ipt_2.disabled = false
-                })
+                document.getElementById('user-maneuver').innerHTML = ''
+                document.getElementById('user-maneuver').append(sel_1)
+                document.getElementById('user-maneuver').append(sel_2)
+            },
+            populate: (content) => {}
+        },
+        {
+            mode: 'automatic', // select
+            props: () => {
+                const sel = document.createElement('select')
+                sel.id = 'sel'
+                document.getElementById('user-maneuver').innerHTML = ''
+                document.getElementById('user-maneuver').append(sel)
+            },
+            populate: (content) => { // How is content formatted?
+                const init_option = document.createElement('option')
+                init_option.value = ''
+                init_option.append(document.createTextNode('Select maneuver...'))
+                document.getElementById('sel').append(init_option)
+                for (let i = 0; i < content.length; ++i) {
+                    const option = document.createElement('option')
+                    option.value = i
+                    option.append(document.createTextNode(content[i]))
+                    document.getElementById('sel').append(option)
+                }
             }
+        },
+        {
+            mode: 'explorative'
         }
+
+
+        // {
+        //     mode: 'manual',
+        //     props: (e, piece) => {
+        //         const sel_1 = document.createElement('select')
+        //         sel_1.id = 'sel-1'
+        //         const init_opt_1 = document.createElement('option')
+        //         init_opt_1.value = ''
+        //         init_opt_1.append(document.createTextNode('Select action'))
+        //         sel_1.append(init_opt_1)
+        //         for (const action of actions) {
+        //             if (action === 'unbridge' && !piece.bridged)
+        //                 continue;
+        //             const option = document.createElement('option')
+        //             option.value = actions[action].value
+        //             option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
+        //             sel_1.append(option)
+        //         }
+        //
+        //         const ipt_1 = document.createElement('input')
+        //         ipt_1.id = 'ipt-1'
+        //         ipt_1.pattern = '([A-H][1-8])|([1-8][A-H])'
+        //         ipt_1.disabled = true
+        //
+        //         const sel_2 = document.createElement('select')
+        //         sel_2.id = 'sel-2'
+        //         const ipt_2 = document.createElement('input')
+        //         ipt_2.id = 'ipt-2'
+        //         ipt_2.pattern = '([A-H][1-8])|([1-8][A-H])'
+        //         ipt_2.disabled = true
+        //
+        //         sel_1.addEventListener('change', (e) => {
+        //             const val = e.target.value
+        //             const opt = document.querySelector('#sel-1 option')
+        //             const opt_text = opt.innerHTML
+        //             if (!val) {
+        //                 opt.innerHTML = ''
+        //                 if (opt_text.includes('Deselect'))
+        //                     opt.append(document.createTextNode('Select action'))
+        //                 else
+        //                     opt.append(document.createTextNode('Deselect action'))
+        //
+        //                 ipt_1.disabled = true
+        //                 sel_2.innerHTML = ''
+        //                 ipt_2.value = ''
+        //                 ipt_2.disabled = true
+        //                 return;
+        //             }
+        //
+        //             ipt_1.disabled = false
+        //             sel_2.innerHTML = ''
+        //             ipt_2.value = ''
+        //             ipt_2.disabled = true
+        //
+        //             if (val === 'unload')
+        //                 return;
+        //
+        //             const init_opt_2 = document.createElement('option')
+        //             init_opt_2.value = ''
+        //             init_opt_2.append(document.createTextNode('Select second action'))
+        //             sel_2.append(init_opt_2)
+        //             for (const action of actions) {
+        //                 if (actions[action].value === val
+        //                 || (action === 'unbridge' && !piece.bridged))
+        //                     continue;
+        //                 const option = document.createElement('option')
+        //                 option.value = actions[action].value
+        //                 option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
+        //                 sel_2.append(option)
+        //             }
+        //         })
+        //
+        //         sel_2.addEventListener('change', (e) => {
+        //             const val = e.target.value
+        //             const opt = document.querySelector('#sel-1 option')
+        //             const opt_text = opt.innerHTML
+        //             if (!val) {
+        //                 opt.innerHTML = ''
+        //                 if (opt_text.includes('Deselect'))
+        //                     opt.append(document.createTextNode('Select second action'))
+        //                 else
+        //                     opt.append(document.createTextNode('Deselect action'))
+        //                 ipt_2.disabled = true
+        //                 return;
+        //             }
+        //             ipt_2.disabled = false
+        //         })
+        //     }
+        // }
     ]
 }
 
 const settings = {
-    graphics: 0,
+    graphics: 2,
     anims: false,
-    colors: 0,
+    colors: 1,
     players: [true, true],  // true: person
     input_modes: 0
 }
