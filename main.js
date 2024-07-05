@@ -30,7 +30,7 @@ const options = {
                 sel_1.id = 'sel-1'
                 const init_opt_1 = document.createElement('option')
                 init_opt_1.value = ''
-                init_opt_1.append(document.createTextNode('Select first action'))
+                init_opt_1.append(document.createTextNode('Select action'))
                 sel_1.append(init_opt_1)
                 for (const action of actions) {
                     if (action === 'unbridge' && !piece.bridged)
@@ -56,10 +56,11 @@ const options = {
                 sel_1.addEventListener('change', (e) => {
                     const val = e.target.value
                     const opt = document.querySelector('#sel-1 option')
+                    const opt_text = opt.innerHTML
                     if (!val) {
                         opt.innerHTML = ''
-                        if (opt.value.includes('Deselect'))
-                            opt.append(document.createTextNode('Select first action'))
+                        if (opt_text.includes('Deselect'))
+                            opt.append(document.createTextNode('Select action'))
                         else
                             opt.append(document.createTextNode('Deselect action'))
 
@@ -71,14 +72,12 @@ const options = {
                     }
 
                     ipt_1.disabled = false
+                    sel_2.innerHTML = ''
+                    ipt_2.value = ''
+                    ipt_2.disabled = true
 
-                    if (val === 'unload') {
-
-                        sel_2.innerHTML = ''
-                        ipt_2.value = ''
-                        ipt_2.disabled = true
+                    if (val === 'unload')
                         return;
-                    }
 
                     const init_opt_2 = document.createElement('option')
                     init_opt_2.value = ''
@@ -96,9 +95,18 @@ const options = {
                 })
 
                 sel_2.addEventListener('change', (e) => {
-                    const res = listener(e.target.value, 2, document.querySelector('#sel-2 option'))
-                    if (!res)
+                    const val = e.target.value
+                    const opt = document.querySelector('#sel-1 option')
+                    const opt_text = opt.innerHTML
+                    if (!val) {
+                        opt.innerHTML = ''
+                        if (opt_text.includes('Deselect'))
+                            opt.append(document.createTextNode('Select second action'))
+                        else
+                            opt.append(document.createTextNode('Deselect action'))
+                        ipt_2.disabled = true
                         return;
+                    }
                     ipt_2.disabled = false
                 })
             }
