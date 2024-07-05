@@ -28,9 +28,10 @@ const options = {
             props: (e, piece) => {
                 const sel_1 = document.createElement('select')
                 sel_1.id = 'sel-1'
-                const init_option = document.createElement('option')
-                init_option.value = ''
-                init_option.append(document.createTextNode('Select action'))
+                const init_opt_1 = document.createElement('option')
+                init_opt_1.value = ''
+                init_opt_1.append(document.createTextNode('Select first action'))
+                sel_1.append(init_opt_1)
                 for (const action of actions) {
                     if (action === 'unbridge' && !piece.bridged)
                         continue;
@@ -39,6 +40,7 @@ const options = {
                     option.append(document.createTextNode(actions[action].value.replace('_', ' ')))
                     sel_1.append(option)
                 }
+
                 const ipt_1 = document.createElement('input')
                 ipt_1.id = 'ipt-1'
                 ipt_1.pattern = '([A-H][1-8])|([1-8][A-H])'
@@ -51,27 +53,40 @@ const options = {
                 ipt_2.pattern = '([A-H][1-8])|([1-8][A-H])'
                 ipt_2.disabled = true
 
-                const listener = (val, n, ipt) => {
-                    const opt = document.querySelector(`#sel-${n} option`)
-                    if (!val) {
-                        if (opt.innerHTML === 'Deselect') {
-                            opt.innerHTML = ''
-                            opt.append(document.createTextNode('Select action'))
-                        }
-                        ipt.disabled = true
-                        return false;
-                    }
-                    return true
-                }
-
                 sel_1.addEventListener('change', (e) => {
-                    sel_2.innerHTML = ''
-                    const res = listener(e.target.value, 1, document.querySelector('#sel-1 option'))
-                    if (!res)
+                    const val = e.target.value
+                    const opt = document.querySelector('#sel-1 option')
+                    if (!val) {
+                        opt.innerHTML = ''
+                        if (opt.value.includes('Deselect'))
+                            opt.append(document.createTextNode('Select first action'))
+                        else
+                            opt.append(document.createTextNode('Deselect action'))
+
+                        ipt_1.disabled = true
+                        sel_2.innerHTML = ''
+                        ipt_2.value = ''
+                        ipt_2.disabled = true
                         return;
+                    }
+
                     ipt_1.disabled = false
+
+                    if (val === 'unload') {
+
+                        sel_2.innerHTML = ''
+                        ipt_2.value = ''
+                        ipt_2.disabled = true
+                        return;
+                    }
+
+                    const init_opt_2 = document.createElement('option')
+                    init_opt_2.value = ''
+                    init_opt_2.append(document.createTextNode('Select second action'))
+                    sel_2.append(init_opt_2)
                     for (const action of actions) {
-                        if ((action === 'unbridge' && !piece.bridged) || value === 'unload')
+                        if (actions[action].value === val
+                        || (action === 'unbridge' && !piece.bridged))
                             continue;
                         const option = document.createElement('option')
                         option.value = actions[action].value
