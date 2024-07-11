@@ -1,57 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shooters Chess</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <fieldset>
-            <legend>Shooters Chess</legend>
-            <select id="game-info"></select>
-            <div>
-                <button id="graphics-btn" title="Cycle between looks of pieces">
-                    <canvas id="graphics-btn-img">Graphics</canvas>
-                </button>
-                <button id="anims-btn>" title="Toggle animations">
-                    <canvas id="anims-btn-img">Animation</canvas>
-                </button>
-                <button id="colors-btn" title="Cycle between board and page colors">
-                    <canvas id="colors-btn-img">Colors</canvas>
-                </button>
-                <button id="players-btn" title="Change numbers of computer and people players">
-                    <canvas id="players-btn-img">Players</canvas>
-                </button>
-                <button id="input-mode-btn" title="Change mode of entering positions">
-                    <canvas id="input-mode-btn-img">Input Mode</canvas>
-                </button>
-            </div>
-        </fieldset>
-    </header>
-    <main>
-        <section id="info" class="inactive">
-
-        </section>
-        <canvas id="game">Browser does not support canvas.</canvas>
-    </main>
-    <footer>
-        <section id="user-turn">
-            <h3>Player: <span id="user"></span></h3>
-            <button id="init-btn">New Game</button>
-        </section>
-        <section id="input">
-            <select id="user-pieces"></select>
-            <div id="user-maneuver"></div>
-        </section>
-        <section id="submit">
-            <button id="submit-btn">Declare</button>
-            <button id="skip-btn">Skip</button>
-        </section>
-    </footer>
-    <script type="module" src="/main.js"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shooters Chess</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header>
+            <fieldset>
+                <legend>Shooters Chess</legend>
+                <select id="game-info"></select>
+                <div>
+                    <button
+                        id="graphics-btn"
+                        title="Cycle between looks of pieces"
+                    >
+                        <canvas id="graphics-btn-img">Graphics</canvas>
+                    </button>
+                    <button id="anims-btn>" title="Toggle animations">
+                        <canvas id="anims-btn-img">Animation</canvas>
+                    </button>
+                    <button
+                        id="colors-btn"
+                        title="Cycle between board and page colors"
+                    >
+                        <canvas id="colors-btn-img">Colors</canvas>
+                    </button>
+                    <button
+                        id="players-btn"
+                        title="Change numbers of computer and people players"
+                    >
+                        <canvas id="players-btn-img">Players</canvas>
+                    </button>
+                    <button
+                        id="input-mode-btn"
+                        title="Change mode of entering positions"
+                    >
+                        <canvas id="input-mode-btn-img">Input Mode</canvas>
+                    </button>
+                </div>
+            </fieldset>
+            <p><a href="./test.html">Test</a></p>
+        </header>
+        <main>
+            <canvas id="game">Browser does not support canvas.</canvas>
+        </main>
+        <footer>
+            <section id="user-turn">
+                <h3>Player: <span id="user"></span></h3>
+                <button id="init-btn">New Game</button>
+            </section>
+            <section id="input">
+                <select id="user-pieces"></select>
+                <div id="user-maneuver"></div>
+            </section>
+            <section id="submit">
+                <button id="submit-btn">Declare</button>
+                <button id="skip-btn">Skip</button>
+            </section>
+        </footer>
+        <script type="module" src="/main.js"></script>
+    </body>
 </html>
