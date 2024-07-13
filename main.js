@@ -132,7 +132,6 @@ game.pieces = {
 * - move in series: shoot and take movement
 */
 const pawn = () => {
-
 }
 
 /*

@@ -6,11 +6,28 @@
 	<title>Shooters Chess</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap"
-		rel="stylesheet"
-	/>
-	<style></style>
+	<link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap" rel="stylesheet" />
+	<style>
+		body {
+			width: 100vw;
+			height: 100vh;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			place-items: center;
+		}
+		
+		#board {
+			display: grid;
+			grid-template-columns: repeat(8, 36px);
+		}
+		
+		#board div {
+			width: 36px;
+			height: 36px;
+			border: 1px solid black;
+		}
+	</style>
 </head>
 <body>
 	<article id="board"></article>
@@ -28,5 +45,6 @@
 			<button id="skip-btn">Skip</button>
 		</section>
 	</article>
+	<script type="module" src="/test.js"></script>
 </body>
 </html>
