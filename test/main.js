@@ -8,3 +8,4 @@ for (let i = 0; i < max_squ ** 2; ++i) {
 	div.id = `${Object.keys(alpha)[idx_val]}${Math.floor(i / max_squ) + 1}`
 	board.append(div)
 }
+
