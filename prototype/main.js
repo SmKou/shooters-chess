@@ -72,37 +72,33 @@ const pos_coord = (idx) => {
 	return `${x}${y}`
 }
 
-const pos_idx = (coord) => {
-	if (isNaN(coord[0]))
-		return alpha[coord[0]] + 8 * Number(coord[1])
-	return alpha[coord[1]] + 8 * Number(coord[0])
-}
+const pos_idx = (coord) => alpha[coord[0]] + 8 * (Number(coord[1]) - 1)
 
 const format_name = (name, pos) => {
 	const piece = name.split('_')[1]
 	return `${name[0].toUpperCase() + name.slice(1)} at ${pos.toUpperCase()}`
 }
 
-const pawn = {
-	move: () => {},
-	shoot: () => {}
+const move = (pre, post) => {
+	return {
+		status: true,
+		message: `${pre} moved to ${post}`
+	}
 }
 
-const rook = {}
+const orbit = (pre, post) => {
+	return {
+		status: true,
+		message: `${pre} orbited to ${post}`
+	}
+}
 
-const bishop = {}
-
-const knight = {}
-
-const queen = {}
-
-const king = {}
-
-const move = (pre, post) => {}
-
-const orbit = (pre, post) => {}
-
-const shoot = () => {}
+const shoot = () => {
+	return {
+		status: true,
+		message: `${pre} shot at ${post}`
+	}
+}
 
 const bridge = (pre, post) => {
 	console.log('bridge', pre, post)
@@ -159,14 +155,24 @@ const bridge = (pre, post) => {
 	}
 }
 
-const unbridge = () => {}
+const unbridge = (pre, post) => {
+	if (post)
+		return unload(pre, post)
+	return {
+		status: true,
+		message: `${pre} unbridged`
+	}
+}
 
-const unload = () => {}
+const unload = (pre, post) => {
+	return {
+		status: true,
+		message: `${pre} unloaded to ${post}`
+	}
+}
 
-
-const board = document.getElementById('board')
 const draw = () => {
-	board.innerHTML = ''
+	document.getElementById('board').innerHTML = ''
 	for (let i = 0; i < max_squ ** 2; ++i) {
 		const div = document.createElement("div")
 		const idx_val = Object.values(alpha).indexOf(i % max_squ)
@@ -196,7 +202,7 @@ const draw = () => {
 			}
 
 		}
-		board.append(div)
+		document.getElementById('board').append(div)
 	}
 	document.getElementById('user-command').value = ''
 	document.getElementById('confirmation').value = ''
@@ -205,21 +211,27 @@ draw()
 
 const select = (pos) => {
 	if (pos === game.pos) return;
+
 	const pieces = game.pieces[sides[Number(game.player)]]
 
 	if (game.pos) {
 		document.getElementById(game.pos).style.background = 'transparent'
 
-		const bridged = pieces[game.board[pos_idx(game.pos)]].bridged
+		const piece = game.board[pos_idx(game.pos)]
+		const bridged = pieces[piece]?.bridged
 		if (bridged)
 			document.getElementById(bridged).style.background = 'transparent'
 
 		game.pos = ''
 	}
 
-	document.getElementById(pos).style.background = 'lightgreen'
+	if (!game.board[pos_idx(pos)]) return;
 
-	const bridge = pieces[game.board[pos_idx(pos)]].bridged
+	document.getElementById(pos).style.background = 'lightgreen'
+	game.pos = pos
+
+	const piece = game.board[pos_idx(pos)]
+	const bridge = pieces[piece]?.bridged
 	if (bridge)
 		document.getElementById(bridge).style.background = 'lightgreen'
 }
@@ -242,28 +254,37 @@ const controller = (pre, post, cmd) => {
 }
 
 document.getElementById('user-command').addEventListener('keydown', e => {
+	// Command construction
 	if (e.key === 'Backspace') {
+		if (!command.length) return;
 		if (command[command.length - 1].length > 1)
 			command[command.length - 1] = command[command.length - 1].slice(0, -1)
 		else
 			command.pop()
 		return;
 	}
-	if (!isNaN(e.key) || e.key === '-') {
+	if (!isNaN(e.key)) {
 		const v = command[command.length - 1]
 		command[command.length - 1] = v + e.key
 	}
-	if (new RegExp(/[a-z]/i).test(e.key))
+	if (e.key !== 'Enter' && new RegExp(/[a-hmrux]/i).test(e.key))
 		command.push(e.key)
 
 	if (e.key !== 'Enter') return;
+
+	// Command execution
 	if (command.length > 5) {
-		document.getElementById('confirmation').innerHTML = 'Invalid maneuver'
+		document.getElementById('confirmation').innerHTML = `Invalid maneuver: ${command.join('')}`
+		document.getElementById('user-command').value = ''
+		command.length = 0
 		return;
 	}
-	for (const tokens of command)
+
+	for (const token of command)
 		if (token.length < 1 || token.length > 2) {
-			document.getElementById('confirmation').innerHTML = 'Invalid maneuver'
+			document.getElementById('confirmation').innerHTML = `Invalid maneuver: ${command.join('')}`
+			document.getElementById('user-command').value = ''
+			command.length = 0
 			return;
 		}
 
@@ -273,17 +294,25 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 		targets: []
 	}
 
-	select(tokens.piece)
-	if (command.length < 2) return;
-
 	while (command.length) {
 		const token = command.pop()
 		if (token.length === 1)
 			tokens.actions.unshift(token)
 		else
-			tokens.targets.unshift(token)
+			tokens.targets.unshift(token.toUpperCase())
 	}
 
-	if (tokens.targets.length > 1) {}
-	else {}
+	select(tokens.piece)
+
+	if (tokens.actions.length === 1) {
+		const res = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
+		if (res.status) {}
+		else {}
+	}
+	else {
+		const fst_act = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
+		if (fst_act.status) {}
+		else {}
+	}
+
 })
