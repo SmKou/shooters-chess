@@ -257,5 +257,33 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 		command.push(e.key)
 
 	if (e.key !== 'Enter') return;
+	if (command.length > 5) {
+		document.getElementById('confirmation').innerHTML = 'Invalid maneuver'
+		return;
+	}
+	for (const tokens of command)
+		if (token.length < 1 || token.length > 2) {
+			document.getElementById('confirmation').innerHTML = 'Invalid maneuver'
+			return;
+		}
 
+	const tokens = {
+		piece: command.shift().toUpperCase(),
+		actions: [],
+		targets: []
+	}
+
+	select(tokens.piece)
+	if (command.length < 2) return;
+
+	while (command.length) {
+		const token = command.pop()
+		if (token.length === 1)
+			tokens.actions.unshift(token)
+		else
+			tokens.targets.unshift(token)
+	}
+
+	if (tokens.targets.length > 1) {}
+	else {}
 })
