@@ -22,43 +22,40 @@ const game = {
 		"black_rook_queen", "black_knight_queen", "black_bishop_queen", "black_queen", "black_king", "black_bishop_king", "black_knight_king", "black_rook_king"
 	],
 	pieces: {
-		white: {
-			white_rook_queen: { rank: 5 },
-			white_rook_king: { rank: 5 },
-			white_knight_queen: { rank: 3 },
-			white_knight_king: { rank: 3 },
-			white_bishop_queen: { rank: 3 },
-			white_bishop_king: { rank: 3 },
-			white_queen: { rank: 9 },
-			white_king: { rank: 9 },
-			white_pawn_1: { rank: 1, dir: 1, first_move: true },
-			white_pawn_2: { rank: 1, dir: 1, first_move: true },
-			white_pawn_3: { rank: 1, dir: 1, first_move: true },
-			white_pawn_4: { rank: 1, dir: 1, first_move: true },
-			white_pawn_5: { rank: 1, dir: 1, first_move: true },
-			white_pawn_6: { rank: 1, dir: 1, first_move: true },
-			white_pawn_7: { rank: 1, dir: 1, first_move: true },
-			white_pawn_8: { rank: 1, dir: 1, first_move: true }
-		},
-		black: {
-			black_rook_queen: { rank: 5 },
-			black_rook_king: { rank: 5 },
-			black_knight_queen: { rank: 3 },
-			black_knight_king: { rank: 3 },
-			black_bishop_queen: { rank: 3 },
-			black_bishop_king: { rank: 3 },
-			black_queen: { rank: 9 },
-			black_king: { rank: 9 },
-			black_pawn_1: { rank: 1, dir: -1, first_move: true },
-			black_pawn_2: { rank: 1, dir: -1, first_move: true },
-			black_pawn_3: { rank: 1, dir: -1, first_move: true },
-			black_pawn_4: { rank: 1, dir: -1, first_move: true },
-			black_pawn_5: { rank: 1, dir: -1, first_move: true },
-			black_pawn_6: { rank: 1, dir: -1, first_move: true },
-			black_pawn_7: { rank: 1, dir: -1, first_move: true },
-			black_pawn_8: { rank: 1, dir: -1, first_move: true }
-		}
-	}
+		white_rook_queen: { rank: 5, side: true },
+		white_rook_king: { rank: 5, side: true },
+		white_knight_queen: { rank: 3, side: true },
+		white_knight_king: { rank: 3, side: true },
+		white_bishop_queen: { rank: 3, side: true },
+		white_bishop_king: { rank: 3, side: true },
+		white_queen: { rank: 9, side: true },
+		white_king: { rank: 9, side: true },
+		white_pawn_1: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_2: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_3: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_4: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_5: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_6: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_7: { rank: 1, dir: 1, first_move: true, side: true },
+		white_pawn_8: { rank: 1, dir: 1, first_move: true, side: true },
+		black_rook_queen: { rank: 5, side: false },
+		black_rook_king: { rank: 5, side: false },
+		black_knight_queen: { rank: 3, side: false },
+		black_knight_king: { rank: 3, side: false },
+		black_bishop_queen: { rank: 3, side: false },
+		black_bishop_king: { rank: 3, side: false },
+		black_queen: { rank: 9, side: false },
+		black_king: { rank: 9, side: false },
+		black_pawn_1: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_2: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_3: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_4: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_5: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_6: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_7: { rank: 1, dir: -1, first_move: true, side: false },
+		black_pawn_8: { rank: 1, dir: -1, first_move: true, side: false }
+	},
+	record: []
 }
 
 const pos_coord = (idx) => {
@@ -212,13 +209,11 @@ draw()
 const select = (pos) => {
 	if (pos === game.pos) return;
 
-	const pieces = game.pieces[sides[Number(game.player)]]
-
 	if (game.pos) {
 		document.getElementById(game.pos).style.background = 'transparent'
 
 		const piece = game.board[pos_idx(game.pos)]
-		const bridged = pieces[piece]?.bridged
+		const bridged = game.pieces[piece]?.bridged
 		if (bridged)
 			document.getElementById(bridged).style.background = 'transparent'
 
@@ -231,7 +226,7 @@ const select = (pos) => {
 	game.pos = pos
 
 	const piece = game.board[pos_idx(pos)]
-	const bridge = pieces[piece]?.bridged
+	const bridge = game.pieces[piece]?.bridged
 	if (bridge)
 		document.getElementById(bridge).style.background = 'lightgreen'
 }
@@ -273,6 +268,8 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 	if (e.key !== 'Enter') return;
 
 	// Command execution
+	document.getElementById('confirmation').innerHTML = ''
+
 	if (command.length > 5) {
 		document.getElementById('confirmation').innerHTML = `Invalid maneuver: ${command.join('')}`
 		document.getElementById('user-command').value = ''
@@ -306,8 +303,14 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 
 	if (tokens.actions.length === 1) {
 		const res = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
-		if (res.status) {}
-		else {}
+		if (!res.status) {
+			document.getElementById('user-command').value = ''
+			document.getElementById('confirmation').value = res.error
+			return;
+		}
+		document.getElementById('confirmation').append(document.createTextNode(res.message))
+		// if game.record[-1] => undefined, game.record[-1] = []
+		 // game.record[game.record.length - 1][Number(game.player)] = ''
 	}
 	else {
 		const fst_act = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
@@ -315,4 +318,6 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 		else {}
 	}
 
+	command.length = 0
+	document.getElementById('user-command').value = ''
 })
