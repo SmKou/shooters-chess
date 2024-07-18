@@ -90,7 +90,7 @@ const orbit = (pre, post) => {
 	}
 }
 
-const shoot = () => {
+const shoot = (pre, post) => {
 	return {
 		status: true,
 		message: `${pre} shot at ${post}`
@@ -98,57 +98,61 @@ const shoot = () => {
 }
 
 const bridge = (pre, post) => {
-	console.log('bridge', pre, post)
-	if (!pre || !post)
-		return { status: false, error: `invalid input: ${pre} m ${post}` }
-	if (pre === post)
-		return { status: false, error: `${pre} cannot bridge ${post}` }
-
-	pre = {
-		pos: pre,
-		name: game.board[pos_idx(pre)],
-		side: sides[game.player]
-	}
-	pre.data = game.pieces[pre.side][pre.name]
-
-	post = {
-		pos: post,
-		name: game.board[pos_idx(post)]
-	}
-	post.side = Object.keys(game.pieces[pre.side]).includes(post.name) ? pre.side : sides[!game.player]
-	post.data = game.pieces[post.side][post.name]
-
-	console.log('bridging', pre, post)
-
-	if (pre.data.bridged)
-		return { status: false, error: `${format_name(pre.name, pre.pos)} is already bridged` }
-	if (post.data.bridged)
-		return { status: false, error: `${format_name(post.name, post.pos)} is already bridged` }
-
-	let bridge_state = 'bridged with'
-	if (pre.side !== post.side)
-		if (pre.data.rank >= post.data.rank)
-			bridge_state = 'captured '
-		else {
-			const resp = window.confirm(`If ${format_name(pre.name)} bridges ${format_name(post.name)}, it will be captured. Are you sure you want to continue?`)
-			if (!resp) return { status: false, error: 'Maneuver not accepted' }
-			delete(game.pieces[pre.side][pre.name])
-			pre.data.bridged = post.pos
-			game.pieces[post.side][pre.name] = pre.data
-			post.data.bridged = pre.pos
-			return {
-				status: true,
-				message: `${format_name(pre.name, pre.pos)} was captured by ${format_name(post.name, post.pos)}`
-			}
-		}
-
-	delete(game.pieces[post.side][post.name])
-	post.data.bridged = pre.pos
-	game.pieces[pre.side][post.name] = post.data
-	pre.data.bridged = post.pos
+	// console.log('bridge', pre, post)
+	// if (!pre || !post)
+	// 	return { status: false, error: `invalid input: ${pre} m ${post}` }
+	// if (pre === post)
+	// 	return { status: false, error: `${pre} cannot bridge ${post}` }
+ //
+	// pre = {
+	// 	pos: pre,
+	// 	name: game.board[pos_idx(pre)],
+	// 	side: sides[game.player]
+	// }
+	// pre.data = game.pieces[pre.side][pre.name]
+ //
+	// post = {
+	// 	pos: post,
+	// 	name: game.board[pos_idx(post)]
+	// }
+	// post.side = Object.keys(game.pieces[pre.side]).includes(post.name) ? pre.side : sides[!game.player]
+	// post.data = game.pieces[post.side][post.name]
+ //
+	// console.log('bridging', pre, post)
+ //
+	// if (pre.data.bridged)
+	// 	return { status: false, error: `${format_name(pre.name, pre.pos)} is already bridged` }
+	// if (post.data.bridged)
+	// 	return { status: false, error: `${format_name(post.name, post.pos)} is already bridged` }
+ //
+	// let bridge_state = 'bridged with'
+	// if (pre.side !== post.side)
+	// 	if (pre.data.rank >= post.data.rank)
+	// 		bridge_state = 'captured '
+	// 	else {
+	// 		const resp = window.confirm(`If ${format_name(pre.name)} bridges ${format_name(post.name)}, it will be captured. Are you sure you want to continue?`)
+	// 		if (!resp) return { status: false, error: 'Maneuver not accepted' }
+	// 		delete(game.pieces[pre.side][pre.name])
+	// 		pre.data.bridged = post.pos
+	// 		game.pieces[post.side][pre.name] = pre.data
+	// 		post.data.bridged = pre.pos
+	// 		return {
+	// 			status: true,
+	// 			message: `${format_name(pre.name, pre.pos)} was captured by ${format_name(post.name, post.pos)}`
+	// 		}
+	// 	}
+ //
+	// delete(game.pieces[post.side][post.name])
+	// post.data.bridged = pre.pos
+	// game.pieces[pre.side][post.name] = post.data
+	// pre.data.bridged = post.pos
+	// return {
+	// 	status: true,
+	// 	message: `${format_name(pre.name, pre.pos)} ${bridge_state} ${format_name(post.name, post.pos)}`
+	// }
 	return {
 		status: true,
-		message: `${format_name(pre.name, pre.pos)} ${bridge_state} ${format_name(post.name, post.pos)}`
+		message: `${pre} bridged ${post}`
 	}
 }
 
@@ -240,12 +244,21 @@ const controller = (pre, post, cmd) => {
 			return shoot(pre, post)
 		case 'r':
 			return bridge(pre, post)
-		default:
+		case 'u':
 			if (post)
 				return unload(pre, post)
 			else
 				return unbridge(pre, post)
+		default:
+			return { status: false, message: `Improper input: ${pre} ${cmd} ${post}`}
 	}
+}
+
+const clear = (message) => {
+	if (message)
+		document.getElementById('confirmation').innerHTML = message
+		document.getElementById('user-command').value = ''
+		command.length = 0
 }
 
 document.getElementById('user-command').addEventListener('keydown', e => {
@@ -269,19 +282,16 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 
 	// Command execution
 	document.getElementById('confirmation').innerHTML = ''
+	console.log(command)
 
 	if (command.length > 5) {
-		document.getElementById('confirmation').innerHTML = `Invalid maneuver: ${command.join('')}`
-		document.getElementById('user-command').value = ''
-		command.length = 0
+		clear(`Invalid maneuver: ${command.join('')}`)
 		return;
 	}
 
 	for (const token of command)
 		if (token.length < 1 || token.length > 2) {
-			document.getElementById('confirmation').innerHTML = `Invalid maneuver: ${command.join('')}`
-			document.getElementById('user-command').value = ''
-			command.length = 0
+			clear(`Invalid maneuver: ${command.join('')}`)
 			return;
 		}
 
@@ -292,32 +302,31 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 	}
 
 	while (command.length) {
-		const token = command.pop()
+		const token = command.shift()
 		if (token.length === 1)
-			tokens.actions.unshift(token)
+			tokens.actions.push(token)
 		else
-			tokens.targets.unshift(token.toUpperCase())
+			tokens.targets.push(token.toUpperCase())
 	}
 
 	select(tokens.piece)
+	console.log(tokens)
 
-	if (tokens.actions.length === 1) {
-		const res = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
+	let target = tokens.targets.shift()
+	let message = []
+	while (tokens.actions.length) {
+		const action = tokens.actions.shift()
+		const res = controller(tokens.piece, target, action)
 		if (!res.status) {
-			document.getElementById('user-command').value = ''
-			document.getElementById('confirmation').value = res.error
+			clear(res.message)
 			return;
 		}
-		document.getElementById('confirmation').append(document.createTextNode(res.message))
-		// if game.record[-1] => undefined, game.record[-1] = []
-		 // game.record[game.record.length - 1][Number(game.player)] = ''
-	}
-	else {
-		const fst_act = controller(tokens.piece, tokens.targets[0], tokens.actions[0])
-		if (fst_act.status) {}
-		else {}
+		message.push(res.message)
+		if (res.piece)
+			tokens.piece = res.piece
+		if (tokens.targets.length)
+			target = tokens.targets.shift()
 	}
 
-	command.length = 0
-	document.getElementById('user-command').value = ''
+	clear(message.join('. '))
 })
