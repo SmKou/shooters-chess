@@ -98,58 +98,6 @@ const shoot = (pre, post) => {
 }
 
 const bridge = (pre, post) => {
-	// console.log('bridge', pre, post)
-	// if (!pre || !post)
-	// 	return { status: false, error: `invalid input: ${pre} m ${post}` }
-	// if (pre === post)
-	// 	return { status: false, error: `${pre} cannot bridge ${post}` }
- //
-	// pre = {
-	// 	pos: pre,
-	// 	name: game.board[pos_idx(pre)],
-	// 	side: sides[game.player]
-	// }
-	// pre.data = game.pieces[pre.side][pre.name]
- //
-	// post = {
-	// 	pos: post,
-	// 	name: game.board[pos_idx(post)]
-	// }
-	// post.side = Object.keys(game.pieces[pre.side]).includes(post.name) ? pre.side : sides[!game.player]
-	// post.data = game.pieces[post.side][post.name]
- //
-	// console.log('bridging', pre, post)
- //
-	// if (pre.data.bridged)
-	// 	return { status: false, error: `${format_name(pre.name, pre.pos)} is already bridged` }
-	// if (post.data.bridged)
-	// 	return { status: false, error: `${format_name(post.name, post.pos)} is already bridged` }
- //
-	// let bridge_state = 'bridged with'
-	// if (pre.side !== post.side)
-	// 	if (pre.data.rank >= post.data.rank)
-	// 		bridge_state = 'captured '
-	// 	else {
-	// 		const resp = window.confirm(`If ${format_name(pre.name)} bridges ${format_name(post.name)}, it will be captured. Are you sure you want to continue?`)
-	// 		if (!resp) return { status: false, error: 'Maneuver not accepted' }
-	// 		delete(game.pieces[pre.side][pre.name])
-	// 		pre.data.bridged = post.pos
-	// 		game.pieces[post.side][pre.name] = pre.data
-	// 		post.data.bridged = pre.pos
-	// 		return {
-	// 			status: true,
-	// 			message: `${format_name(pre.name, pre.pos)} was captured by ${format_name(post.name, post.pos)}`
-	// 		}
-	// 	}
- //
-	// delete(game.pieces[post.side][post.name])
-	// post.data.bridged = pre.pos
-	// game.pieces[pre.side][post.name] = post.data
-	// pre.data.bridged = post.pos
-	// return {
-	// 	status: true,
-	// 	message: `${format_name(pre.name, pre.pos)} ${bridge_state} ${format_name(post.name, post.pos)}`
-	// }
 	return {
 		status: true,
 		message: `${pre} bridged ${post}`
