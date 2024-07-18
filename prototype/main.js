@@ -202,6 +202,30 @@ const controller = (pre, post, cmd) => {
 	}
 }
 
+const change_board = (changes) => {
+	for (const coord of changes.remove) {
+		const idx = pos_idx(coord)
+		const piece = game.board[idx]
+		delete(game.pieces[piece])
+		game.board[idx] = ''
+	}
+
+	for (const coord of Object.keys(changes.move)) {
+		const idx = pos_idx(coord)
+		const piece = game.board[idx]
+
+		const dest_idx = pos_idx[changes.move[coord]]
+		const dest_piece = game.board[dest_idx]
+		if (dest_piece)
+			return { status: false, message: `Error found: ${dest_piece} at ${changes.move[coord]}, ${piece} cannot move.` }
+
+		game.board[idx] = ''
+		game.board[dest_idx] = piece
+	}
+
+	return { status: true }
+}
+
 const clear = (message) => {
 	if (message)
 		document.getElementById('confirmation').innerHTML = message
@@ -230,7 +254,6 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 
 	// Command execution
 	document.getElementById('confirmation').innerHTML = ''
-	console.log(command)
 
 	if (command.length > 5) {
 		clear(`Invalid maneuver: ${command.join('')}`)
@@ -258,10 +281,14 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 	}
 
 	select(tokens.piece)
-	console.log(tokens)
+
+	const changes = {
+		remove: [],
+		move: {},
+		message: []
+	}
 
 	let target = tokens.targets.shift()
-	let message = []
 	while (tokens.actions.length) {
 		const action = tokens.actions.shift()
 		const res = controller(tokens.piece, target, action)
@@ -269,12 +296,24 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 			clear(res.message)
 			return;
 		}
-		message.push(res.message)
+
+		if (res.remove)
+			changes.remove = changes.remove.concat(res.remove)
+		if (res.move)
+			changes.move = changes.move.concat(res.move)
+		changes.message.push(res.message)
+
 		if (res.piece)
 			tokens.piece = res.piece
 		if (tokens.targets.length)
 			target = tokens.targets.shift()
 	}
 
-	clear(message.join('. '))
+	const fin_res = change_board(changes)
+	if (!fin_res.status) {
+		clear(fin_res.message)
+		return;
+	}
+
+	clear(changes.message.join('. '))
 })
