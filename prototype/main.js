@@ -345,6 +345,6 @@ document.getElementById('user-command').addEventListener('keydown', e => {
 
 	select(tokens.piece)
 	const res = controller(tokens)
-	change_board({ move, remove })
+	change_board(res)
 	clear(res.message)
 })
