@@ -163,7 +163,7 @@ const draw = () => {
 	for (let i = 0; i < max_squ ** 2; ++i) {
 		const div = document.createElement("div")
 		const idx_val = Object.values(alpha).indexOf(i % max_squ)
-		div.id = `${Object.keys(alpha)[idx_val]}${8 - Math.floor(i / max_squ)}`
+		div.id = `${Object.keys(alpha)[idx_val]}${Math.floor(i / max_squ) + 1}`
 		if (game.board[i]) {
 			const piece = game.board[i].split('_')
 			render_piece(div, piece)
